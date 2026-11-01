@@ -1,8 +1,5 @@
-"""Пайплайн для генерации городов.
 
-Отличие от основного Pipeline: без classifier / novelty / plausibility —
-только генерация + дедуп + фильтр по слогам. Для книги скореры не нужны.
-"""
+"""Пайплайн для городов. Без гендера, без скор-моделей."""
 import random
 from dataclasses import dataclass
 from pathlib import Path
@@ -54,8 +51,10 @@ class CityPipeline:
         while len(results) < count and iteration < max_iterations:
             for i in range(n_candidates):
                 cand_seed = base_seed + iteration * n_candidates + i
+                # Города гендера не имеют — передаём "male" как заглушку
                 name = lstm_sample(self.model, self.itos, self.stoi,
-                                   style, temperature, top_k, top_p, cand_seed)
+                                   style, "male", temperature, top_k,
+                                   top_p, cand_seed)
                 if not name:
                     continue
                 name = name[0].upper() + name[1:].lower()
@@ -71,6 +70,5 @@ class CityPipeline:
                 ))
             iteration += 1
 
-        # Перемешиваем для разнообразия
         random.Random(base_seed).shuffle(results)
         return results[:count]

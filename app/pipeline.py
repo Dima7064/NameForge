@@ -1,5 +1,4 @@
-
-"""Ядро NameForge: генерация → фильтр → скоринг → ранжирование + объяснения."""
+"""Пайплайн: генерация → фильтр → скоринг → ранжирование + объяснения."""
 import json
 import random
 from dataclasses import dataclass, field
@@ -25,6 +24,7 @@ class ScoredName:
     name: str
     scores: dict[str, float]
     breakdown: dict = field(default_factory=dict)
+    gender: str = "male"
 
 
 def _load_scorers(models_dir: Path):
@@ -64,7 +64,6 @@ def _split_syllables(name: str) -> list[str]:
 
 def _empty_explanation(name: str, target_style: str,
                        error: str = "") -> dict:
-    """Заглушка для explain() на некорректном входе — не падаем."""
     return {
         "name": name,
         "syllable_split": name,
@@ -75,10 +74,8 @@ def _empty_explanation(name: str, target_style: str,
         "filters_passed": [error] if error else [],
         "comments": [],
         "style_probs": {s: 0.0 for s in STYLES},
-        "scores": {
-            "style": 0.0, "novelty": 0.0,
-            "plausibility": 0.0, "total": 0.0,
-        },
+        "scores": {"style": 0.0, "novelty": 0.0,
+                   "plausibility": 0.0, "total": 0.0},
     }
 
 
@@ -86,7 +83,7 @@ class Pipeline:
     def __init__(self, model_type: str = "lstm",
                  models_dir: Optional[Path] = None):
         if model_type not in ("lstm", "transformer"):
-            raise ValueError(f"model_type должен быть 'lstm' или 'transformer'")
+            raise ValueError("model_type должен быть 'lstm' или 'transformer'")
         self.model_type = model_type
         self.models_dir = models_dir or (
             Path(__file__).resolve().parent.parent / "models"
@@ -111,16 +108,19 @@ class Pipeline:
             with train_path.open("r", encoding="utf-8") as f:
                 self.train_names = {d["name"].lower() for d in json.load(f)}
 
-    def _sample_one(self, style: str, temperature: float, top_k: int,
+    def _sample_one(self, style: str, gender: str,
+                    temperature: float, top_k: int,
                     top_p: float, seed: int) -> str:
         if self.model_type == "lstm":
             return lstm_sample(self.gen_model, self.itos, self.stoi_gen,
-                               style, temperature, top_k, top_p, seed)
+                               style, gender, temperature, top_k, top_p, seed)
+        # Transformer не поддерживает gender — игнорируем
         return transformer_sample(self.gen_model, self.itos, self.stoi_gen,
                                   style, temperature, top_k, top_p, seed)
 
     def _score_one(self, name: str, target_style: str,
-                   w_style: float, w_novelty: float, w_plaus: float) -> ScoredName:
+                   w_style: float, w_novelty: float, w_plaus: float,
+                   gender: str = "male") -> ScoredName:
         style_probs = predict_proba(self.classifier, self.stoi_cls, name)
         style_score = style_probs[target_style]
         novelty_score = self.novelty.score(name)
@@ -129,31 +129,28 @@ class Pipeline:
                  + w_plaus * plaus_score)
         return ScoredName(
             name=name,
-            scores={
-                "style": style_score, "novelty": novelty_score,
-                "plausibility": plaus_score, "total": total,
-            },
-            breakdown={
-                "syllables": count_syllables(name),
-                "pattern": cv_pattern(name),
-                "style_probs": style_probs,
-            },
+            scores={"style": style_score, "novelty": novelty_score,
+                    "plausibility": plaus_score, "total": total},
+            breakdown={"syllables": count_syllables(name),
+                       "pattern": cv_pattern(name),
+                       "style_probs": style_probs},
+            gender=gender,
         )
 
     def generate(self, style: str, syllables: int, count: int,
-                 seed: Optional[int] = None, temperature: float = 0.8,
-                 top_k: int = 40, top_p: float = 0.9,
+                 seed: Optional[int] = None, gender: str = "male",
+                 temperature: float = 0.8, top_k: int = 40, top_p: float = 0.9,
                  n_candidates: int = 100, max_iterations: int = 3,
                  w_style: float = 0.5, w_novelty: float = 0.25,
                  w_plaus: float = 0.25) -> list[ScoredName]:
         results, _ = self.generate_with_stats(
-            style, syllables, count, seed, temperature, top_k, top_p,
+            style, syllables, count, seed, gender, temperature, top_k, top_p,
             n_candidates, max_iterations, w_style, w_novelty, w_plaus,
         )
         return results
 
     def generate_with_stats(self, style: str, syllables: int, count: int,
-                            seed: Optional[int] = None,
+                            seed: Optional[int] = None, gender: str = "male",
                             temperature: float = 0.8, top_k: int = 40,
                             top_p: float = 0.9, n_candidates: int = 100,
                             max_iterations: int = 3, w_style: float = 0.5,
@@ -161,6 +158,8 @@ class Pipeline:
                             ) -> tuple[list[ScoredName], dict]:
         if style not in STYLES:
             raise ValueError(f"Неизвестный стиль: {style!r}")
+        if gender not in ("male", "female", "random"):
+            raise ValueError(f"gender: male / female / random, дано {gender!r}")
         if not (1 <= syllables <= 10):
             raise ValueError("syllables должен быть 1..10")
         if not (1 <= count <= 50):
@@ -185,7 +184,15 @@ class Pipeline:
         while len(all_scored) < count and iteration < max_iterations:
             for i in range(n_candidates):
                 cand_seed = base_seed + iteration * n_candidates + i
-                name = self._sample_one(style, temperature, top_k, top_p, cand_seed)
+                # Выбор пола
+                if gender == "random":
+                    rng = random.Random(cand_seed ^ 0xABCD)
+                    this_gender = rng.choice(["male", "female"])
+                else:
+                    this_gender = gender
+
+                name = self._sample_one(style, this_gender, temperature,
+                                        top_k, top_p, cand_seed)
                 total_generated += 1
                 if not name:
                     continue
@@ -197,7 +204,8 @@ class Pipeline:
                     continue
                 seen.add(name)
                 all_scored.append(
-                    self._score_one(name, style, w_style, w_novelty, w_plaus)
+                    self._score_one(name, style, w_style, w_novelty,
+                                    w_plaus, this_gender)
                 )
             iteration += 1
 
@@ -213,11 +221,8 @@ class Pipeline:
     def explain(self, name: str, target_style: str,
                 w_style: float = 0.5, w_novelty: float = 0.25,
                 w_plaus: float = 0.25) -> dict:
-        # Защитные проверки: пустое имя и неизвестный стиль не должны
-        # ронять приложение (UI может прислать пустое поле).
         if not name:
-            return _empty_explanation(name, target_style,
-                                      "пустое имя")
+            return _empty_explanation(name, target_style, "пустое имя")
         if target_style not in STYLES:
             return _empty_explanation(name, target_style,
                                       f"неизвестный стиль: {target_style}")
@@ -285,8 +290,6 @@ class Pipeline:
             "filters_passed": filters_passed,
             "comments": comments,
             "style_probs": style_probs,
-            "scores": {
-                "style": style_score, "novelty": nov,
-                "plausibility": plaus, "total": total,
-            },
+            "scores": {"style": style_score, "novelty": nov,
+                       "plausibility": plaus, "total": total},
         }

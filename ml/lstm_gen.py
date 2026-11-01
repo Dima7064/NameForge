@@ -1,4 +1,9 @@
-"""LSTM-генератор фэнтези-имён с условием на стиль."""
+
+"""LSTM-генератор с условием на стиль И пол.
+
+Embedding(символ) + Embedding(стиль) + Embedding(пол) → LSTM → Linear.
+При обучении unisex-данные случайно распределяются male/female.
+"""
 import json
 import random
 from pathlib import Path
@@ -12,11 +17,15 @@ PAD, BOS, EOS = 0, 1, 2
 STYLES = ["elven", "human", "orcish", "northern", "southern"]
 STYLE_TO_ID = {s: i for i, s in enumerate(STYLES)}
 
+GENDERS = ["male", "female"]
+GENDER_TO_ID = {g: i for i, g in enumerate(GENDERS)}
+
 
 class LSTMNameGen(nn.Module):
     def __init__(self, vocab_size: int, hidden_size: int = 128,
                  emb_size: int = 64, style_emb_size: int = 32,
-                 num_layers: int = 2, dropout: float = 0.2):
+                 gender_emb_size: int = 16, num_layers: int = 2,
+                 dropout: float = 0.2):
         super().__init__()
         self.vocab_size = vocab_size
         self.hidden_size = hidden_size
@@ -24,8 +33,9 @@ class LSTMNameGen(nn.Module):
 
         self.char_emb = nn.Embedding(vocab_size, emb_size, padding_idx=PAD)
         self.style_emb = nn.Embedding(len(STYLES), style_emb_size)
+        self.gender_emb = nn.Embedding(len(GENDERS), gender_emb_size)
         self.lstm = nn.LSTM(
-            input_size=emb_size + style_emb_size,
+            input_size=emb_size + style_emb_size + gender_emb_size,
             hidden_size=hidden_size,
             num_layers=num_layers,
             batch_first=True,
@@ -34,11 +44,11 @@ class LSTMNameGen(nn.Module):
         self.dropout = nn.Dropout(dropout)
         self.head = nn.Linear(hidden_size, vocab_size)
 
-    def forward(self, x, styles, hidden=None):
+    def forward(self, x, styles, genders, hidden=None):
         emb = self.char_emb(x)
-        st = self.style_emb(styles).unsqueeze(1)
-        st = st.expand(-1, x.size(1), -1)
-        inp = torch.cat([emb, st], dim=-1)
+        st = self.style_emb(styles).unsqueeze(1).expand(-1, x.size(1), -1)
+        ge = self.gender_emb(genders).unsqueeze(1).expand(-1, x.size(1), -1)
+        inp = torch.cat([emb, st, ge], dim=-1)
         out, hidden = self.lstm(inp, hidden)
         logits = self.head(self.dropout(out))
         return logits, hidden
@@ -55,35 +65,62 @@ def encode_name(name, stoi):
     return [BOS] + [stoi[c] for c in name] + [EOS]
 
 
+def resolve_unisex(data, seed=42):
+    """Unisex → случайно male или female (data augmentation)."""
+    rng = random.Random(seed)
+    out = []
+    for d in data:
+        d2 = dict(d)
+        if d2.get("gender", "unisex") == "unisex":
+            d2["gender"] = rng.choice(["male", "female"])
+        out.append(d2)
+    return out
+
+
 def make_batches(data, batch_size, stoi, rng):
     samples = [
-        (encode_name(d["name"], stoi), STYLE_TO_ID[d["style"]]) for d in data
+        (encode_name(d["name"], stoi),
+         STYLE_TO_ID[d["style"]],
+         GENDER_TO_ID[d["gender"]])
+        for d in data
     ]
     rng.shuffle(samples)
     for i in range(0, len(samples), batch_size):
         chunk = samples[i:i + batch_size]
-        max_len = max(len(seq) for seq, _ in chunk)
-        xs, ys, styles = [], [], []
-        for seq, style in chunk:
+        max_len = max(len(seq) for seq, _, _ in chunk)
+        xs, ys, styles, genders = [], [], [], []
+        for seq, style, gender in chunk:
             padded = seq + [PAD] * (max_len - len(seq))
             xs.append(padded[:-1])
             ys.append(padded[1:])
             styles.append(style)
-        yield torch.tensor(xs), torch.tensor(ys), torch.tensor(styles)
+            genders.append(gender)
+        yield (torch.tensor(xs), torch.tensor(ys),
+               torch.tensor(styles), torch.tensor(genders))
 
 
 def train_lstm(train_data, val_data, vocab_data=None,
+               hidden_size=128, emb_size=64, style_emb_size=32,
+               gender_emb_size=16, num_layers=2, dropout=0.2,
                epochs=150, lr=1e-3, batch_size=16,
                weight_decay=1e-5,
                patience=20, seed=42, verbose=True):
     if vocab_data is None:
         vocab_data = train_data + val_data
 
+    train_data = resolve_unisex(train_data, seed=seed)
+    val_data = resolve_unisex(val_data, seed=seed + 1)
+    vocab_data = resolve_unisex(vocab_data, seed=seed + 2)
+
     torch.manual_seed(seed)
     random.seed(seed)
 
     itos, stoi = build_vocab([d["name"] for d in vocab_data])
-    model = LSTMNameGen(vocab_size=len(itos))
+    model = LSTMNameGen(
+        vocab_size=len(itos), hidden_size=hidden_size, emb_size=emb_size,
+        style_emb_size=style_emb_size, gender_emb_size=gender_emb_size,
+        num_layers=num_layers, dropout=dropout,
+    )
     optimizer = torch.optim.Adam(model.parameters(), lr=lr,
                                   weight_decay=weight_decay)
     criterion = nn.CrossEntropyLoss(ignore_index=PAD)
@@ -97,9 +134,9 @@ def train_lstm(train_data, val_data, vocab_data=None,
         model.train()
         rng = random.Random(seed + epoch)
         train_losses = []
-        for x, y, s in make_batches(train_data, batch_size, stoi, rng):
+        for x, y, s, g in make_batches(train_data, batch_size, stoi, rng):
             optimizer.zero_grad()
-            logits, _ = model(x, s)
+            logits, _ = model(x, s, g)
             loss = criterion(logits.reshape(-1, len(itos)), y.reshape(-1))
             loss.backward()
             torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
@@ -110,8 +147,8 @@ def train_lstm(train_data, val_data, vocab_data=None,
         model.eval()
         val_losses = []
         with torch.no_grad():
-            for x, y, s in make_batches(val_data, batch_size, stoi, random.Random(0)):
-                logits, _ = model(x, s)
+            for x, y, s, g in make_batches(val_data, batch_size, stoi, random.Random(0)):
+                logits, _ = model(x, s, g)
                 loss = criterion(logits.reshape(-1, len(itos)), y.reshape(-1))
                 val_losses.append(loss.item())
         val_loss = sum(val_losses) / max(1, len(val_losses))
@@ -123,8 +160,8 @@ def train_lstm(train_data, val_data, vocab_data=None,
 
         if verbose and (epoch % 10 == 0 or epoch == 1):
             print(f"epoch {epoch:3d} | "
-                  f"train loss {train_loss:.4f} (ppl {history['train_ppl'][-1]:.2f}) | "
-                  f"val loss {val_loss:.4f} (ppl {history['val_ppl'][-1]:.2f})")
+                  f"train ppl {history['train_ppl'][-1]:.2f} | "
+                  f"val ppl {history['val_ppl'][-1]:.2f}")
 
         if val_loss < best_val - 1e-4:
             best_val = val_loss
@@ -143,8 +180,12 @@ def train_lstm(train_data, val_data, vocab_data=None,
 
 
 @torch.no_grad()
-def sample(model, itos, stoi, style, temperature=0.8, top_k=40,
-           top_p=0.9, seed=None, max_len=40):
+def sample(model, itos, stoi, style, gender="male",
+           temperature=0.8, top_k=40, top_p=0.9,
+           seed=None, max_len=40):
+    """gender: 'male' или 'female'."""
+    if gender not in GENDER_TO_ID:
+        gender = "male"
     model.eval()
 
     if seed is not None:
@@ -155,11 +196,12 @@ def sample(model, itos, stoi, style, temperature=0.8, top_k=40,
 
     x = torch.tensor([[BOS]])
     s = torch.tensor([STYLE_TO_ID[style]])
+    g = torch.tensor([GENDER_TO_ID[gender]])
     hidden = None
     result = ""
 
     for _ in range(max_len):
-        logits, hidden = model(x, s, hidden)
+        logits, hidden = model(x, s, g, hidden)
         logits = logits[:, -1, :] / max(1e-6, temperature)
 
         if top_k > 0 and top_k < logits.size(-1):
@@ -202,9 +244,10 @@ def save_lstm(model, itos, stoi, history, path):
         "config": {
             "vocab_size": len(itos),
             "hidden_size": model.hidden_size,
-            "num_layers": model.num_layers,
             "emb_size": model.char_emb.embedding_dim,
             "style_emb_size": model.style_emb.embedding_dim,
+            "gender_emb_size": model.gender_emb.embedding_dim,
+            "num_layers": model.num_layers,
             "dropout": model.dropout.p,
         },
     }, path)

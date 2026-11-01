@@ -1,687 +1,1010 @@
 [
   {
-    "name": "Енердхил",
+    "name": "Линаэвен",
     "style": "elven",
-    "source": "expanded"
+    "source": "expanded",
+    "gender": "male"
   },
   {
-    "name": "Тарондор",
+    "name": "Анайре",
     "style": "elven",
-    "source": "expanded"
+    "source": "expanded",
+    "gender": "male"
   },
   {
-    "name": "Глорфиндел",
+    "name": "Ородрет",
     "style": "elven",
-    "source": "expanded"
+    "source": "expanded",
+    "gender": "male"
   },
   {
-    "name": "Альмиэль",
+    "name": "Аэлинор",
     "style": "elven",
-    "source": "expanded"
+    "source": "expanded_v3",
+    "gender": "female"
   },
   {
-    "name": "Едрахил",
+    "name": "Лориндол",
     "style": "elven",
-    "source": "expanded"
+    "source": "expanded",
+    "gender": "male"
   },
   {
-    "name": "Мириэль",
+    "name": "Елариа",
     "style": "elven",
-    "source": "expanded"
+    "source": "expanded_v3",
+    "gender": "female"
   },
   {
-    "name": "Хатальдир",
+    "name": "Пенголодх",
     "style": "elven",
-    "source": "expanded"
+    "source": "expanded",
+    "gender": "male"
   },
   {
-    "name": "Таранкалиме",
+    "name": "Галадриэль",
     "style": "elven",
-    "source": "expanded"
+    "source": "seed",
+    "gender": "female"
   },
   {
-    "name": "Финарфин",
+    "name": "Ельборон",
     "style": "elven",
-    "source": "expanded"
+    "source": "expanded",
+    "gender": "male"
   },
   {
-    "name": "Ельдалонде",
+    "name": "Таргон",
     "style": "elven",
-    "source": "expanded"
+    "source": "expanded",
+    "gender": "male"
   },
   {
-    "name": "Келеборн",
+    "name": "Ангрод",
     "style": "elven",
-    "source": "seed"
+    "source": "expanded",
+    "gender": "male"
   },
   {
-    "name": "Еарнур",
+    "name": "Роменна",
     "style": "elven",
-    "source": "expanded"
+    "source": "expanded",
+    "gender": "female"
   },
   {
-    "name": "Келебримбор",
+    "name": "Елениэль",
     "style": "elven",
-    "source": "expanded"
+    "source": "expanded_v3",
+    "gender": "female"
   },
   {
-    "name": "Хальмир",
+    "name": "Тармириэль",
     "style": "elven",
-    "source": "expanded"
+    "source": "expanded",
+    "gender": "female"
   },
   {
-    "name": "Гильгалад",
+    "name": "Анариэль",
     "style": "elven",
-    "source": "expanded"
+    "source": "expanded_v3",
+    "gender": "female"
   },
   {
-    "name": "Аэрин",
+    "name": "Наэлир",
     "style": "elven",
-    "source": "expanded"
+    "source": "seed",
+    "gender": "male"
   },
   {
-    "name": "Мелиан",
+    "name": "Миналькар",
     "style": "elven",
-    "source": "seed"
+    "source": "expanded",
+    "gender": "male"
+  },
+  {
+    "name": "Барагунд",
+    "style": "elven",
+    "source": "expanded",
+    "gender": "male"
+  },
+  {
+    "name": "Андрет",
+    "style": "elven",
+    "source": "expanded",
+    "gender": "male"
+  },
+  {
+    "name": "Елурин",
+    "style": "elven",
+    "source": "expanded",
+    "gender": "male"
+  },
+  {
+    "name": "Иллириэн",
+    "style": "elven",
+    "source": "seed",
+    "gender": "male"
   },
   {
     "name": "Элентиль",
     "style": "elven",
-    "source": "seed"
+    "source": "seed",
+    "gender": "female"
   },
   {
     "name": "Тарелендил",
     "style": "elven",
-    "source": "expanded"
+    "source": "expanded",
+    "gender": "male"
   },
   {
     "name": "Егальмот",
     "style": "elven",
-    "source": "expanded"
+    "source": "expanded",
+    "gender": "male"
+  },
+  {
+    "name": "Иворвен",
+    "style": "elven",
+    "source": "expanded_v3",
+    "gender": "female"
   },
   {
     "name": "Фингон",
     "style": "elven",
-    "source": "expanded"
+    "source": "expanded",
+    "gender": "male"
   },
   {
     "name": "Маглор",
     "style": "elven",
-    "source": "expanded"
+    "source": "expanded",
+    "gender": "male"
   },
   {
     "name": "Аредхел",
     "style": "elven",
-    "source": "expanded"
+    "source": "expanded",
+    "gender": "male"
   },
   {
     "name": "Борлад",
     "style": "elven",
-    "source": "expanded"
+    "source": "expanded",
+    "gender": "male"
   },
   {
     "name": "Елеммакил",
     "style": "elven",
-    "source": "expanded"
+    "source": "expanded",
+    "gender": "male"
   },
   {
     "name": "Лориэль",
     "style": "elven",
-    "source": "seed"
+    "source": "seed",
+    "gender": "female"
   },
   {
     "name": "Гуилин",
     "style": "elven",
-    "source": "expanded"
+    "source": "expanded",
+    "gender": "male"
   },
   {
-    "name": "Филип",
+    "name": "Беатрике",
     "style": "human",
-    "source": "expanded"
+    "source": "expanded_v3",
+    "gender": "female"
   },
   {
-    "name": "Адельберт",
+    "name": "Келестине",
     "style": "human",
-    "source": "expanded"
+    "source": "expanded_v3",
+    "gender": "female"
   },
   {
-    "name": "Рэйнер",
+    "name": "Ульрич",
     "style": "human",
-    "source": "expanded"
+    "source": "expanded",
+    "gender": "male"
   },
   {
-    "name": "Венделин",
+    "name": "Есме",
     "style": "human",
-    "source": "expanded"
+    "source": "expanded_v3",
+    "gender": "female"
   },
   {
-    "name": "Чристофер",
+    "name": "Альфред",
     "style": "human",
-    "source": "expanded"
+    "source": "expanded",
+    "gender": "male"
   },
   {
-    "name": "Дитрих",
+    "name": "Ельла",
     "style": "human",
-    "source": "seed"
+    "source": "expanded_v3",
+    "gender": "female"
   },
   {
-    "name": "Гебхард",
+    "name": "Харриэт",
     "style": "human",
-    "source": "expanded"
+    "source": "expanded_v3",
+    "gender": "female"
   },
   {
-    "name": "Бернхард",
+    "name": "Франк",
     "style": "human",
-    "source": "expanded"
+    "source": "expanded",
+    "gender": "male"
   },
   {
-    "name": "Панкраз",
+    "name": "Бернадетте",
     "style": "human",
-    "source": "expanded"
+    "source": "expanded_v3",
+    "gender": "female"
   },
   {
-    "name": "Деннис",
+    "name": "Леонард",
     "style": "human",
-    "source": "expanded"
-  },
-  {
-    "name": "Оливер",
-    "style": "human",
-    "source": "expanded"
-  },
-  {
-    "name": "Станлеи",
-    "style": "human",
-    "source": "expanded"
-  },
-  {
-    "name": "Бенджамин",
-    "style": "human",
-    "source": "expanded"
-  },
-  {
-    "name": "Джулиан",
-    "style": "human",
-    "source": "expanded"
-  },
-  {
-    "name": "Кларенке",
-    "style": "human",
-    "source": "expanded"
-  },
-  {
-    "name": "Леопольд",
-    "style": "human",
-    "source": "expanded"
-  },
-  {
-    "name": "Вернон",
-    "style": "human",
-    "source": "expanded"
-  },
-  {
-    "name": "Вильфред",
-    "style": "human",
-    "source": "expanded"
-  },
-  {
-    "name": "Лукас",
-    "style": "human",
-    "source": "expanded"
-  },
-  {
-    "name": "Геральд",
-    "style": "human",
-    "source": "expanded"
-  },
-  {
-    "name": "Альфонс",
-    "style": "human",
-    "source": "expanded"
-  },
-  {
-    "name": "Клаус",
-    "style": "human",
-    "source": "expanded"
-  },
-  {
-    "name": "Виктор",
-    "style": "human",
-    "source": "expanded"
-  },
-  {
-    "name": "Екхарт",
-    "style": "human",
-    "source": "expanded"
+    "source": "expanded",
+    "gender": "male"
   },
   {
     "name": "Лудвиг",
     "style": "human",
-    "source": "expanded"
+    "source": "expanded",
+    "gender": "male"
+  },
+  {
+    "name": "Дуглас",
+    "style": "human",
+    "source": "expanded",
+    "gender": "male"
+  },
+  {
+    "name": "Джосеф",
+    "style": "human",
+    "source": "expanded",
+    "gender": "male"
+  },
+  {
+    "name": "Кора",
+    "style": "human",
+    "source": "expanded_v3",
+    "gender": "female"
+  },
+  {
+    "name": "Джулиан",
+    "style": "human",
+    "source": "expanded",
+    "gender": "male"
+  },
+  {
+    "name": "Луис",
+    "style": "human",
+    "source": "expanded",
+    "gender": "male"
+  },
+  {
+    "name": "Милес",
+    "style": "human",
+    "source": "expanded",
+    "gender": "male"
+  },
+  {
+    "name": "Ангус",
+    "style": "human",
+    "source": "expanded_v3",
+    "gender": "male"
+  },
+  {
+    "name": "Георгиа",
+    "style": "human",
+    "source": "expanded_v3",
+    "gender": "female"
+  },
+  {
+    "name": "Рудольф",
+    "style": "human",
+    "source": "expanded",
+    "gender": "male"
+  },
+  {
+    "name": "Кирил",
+    "style": "human",
+    "source": "expanded_v3",
+    "gender": "male"
+  },
+  {
+    "name": "Зачариас",
+    "style": "human",
+    "source": "expanded",
+    "gender": "male"
+  },
+  {
+    "name": "Лоренз",
+    "style": "human",
+    "source": "expanded",
+    "gender": "male"
+  },
+  {
+    "name": "Чарлотте",
+    "style": "human",
+    "source": "expanded_v3",
+    "gender": "female"
+  },
+  {
+    "name": "Франклин",
+    "style": "human",
+    "source": "expanded",
+    "gender": "male"
+  },
+  {
+    "name": "Хазел",
+    "style": "human",
+    "source": "expanded_v3",
+    "gender": "female"
+  },
+  {
+    "name": "Гуильлауме",
+    "style": "human",
+    "source": "expanded",
+    "gender": "male"
   },
   {
     "name": "Ховард",
     "style": "human",
-    "source": "expanded"
+    "source": "expanded",
+    "gender": "male"
   },
   {
-    "name": "Фредерикк",
+    "name": "Феликс",
     "style": "human",
-    "source": "expanded"
+    "source": "expanded_v3",
+    "gender": "male"
   },
   {
-    "name": "Тральл",
+    "name": "Катерине",
+    "style": "human",
+    "source": "expanded_v3",
+    "gender": "female"
+  },
+  {
+    "name": "Грахам",
+    "style": "human",
+    "source": "expanded",
+    "gender": "male"
+  },
+  {
+    "name": "Бриан",
+    "style": "human",
+    "source": "expanded",
+    "gender": "male"
+  },
+  {
+    "name": "Клауде",
+    "style": "human",
+    "source": "expanded",
+    "gender": "male"
+  },
+  {
+    "name": "Раул",
+    "style": "human",
+    "source": "expanded",
+    "gender": "male"
+  },
+  {
+    "name": "Рональд",
+    "style": "human",
+    "source": "expanded",
+    "gender": "male"
+  },
+  {
+    "name": "Гольлум",
     "style": "orcish",
-    "source": "expanded"
+    "source": "expanded",
+    "gender": "male"
+  },
+  {
+    "name": "Крагнак",
+    "style": "orcish",
+    "source": "expanded_v3",
+    "gender": "male"
+  },
+  {
+    "name": "Трак",
+    "style": "orcish",
+    "source": "expanded_v3",
+    "gender": "male"
+  },
+  {
+    "name": "Гордуз",
+    "style": "orcish",
+    "source": "expanded",
+    "gender": "male"
+  },
+  {
+    "name": "Тругка",
+    "style": "orcish",
+    "source": "expanded_v3",
+    "gender": "female"
+  },
+  {
+    "name": "Шаргул",
+    "style": "orcish",
+    "source": "seed",
+    "gender": "male"
+  },
+  {
+    "name": "Огду",
+    "style": "orcish",
+    "source": "expanded_v3",
+    "gender": "female"
+  },
+  {
+    "name": "Урукруг",
+    "style": "orcish",
+    "source": "expanded_v3",
+    "gender": "male"
+  },
+  {
+    "name": "Заргол",
+    "style": "orcish",
+    "source": "expanded",
+    "gender": "male"
+  },
+  {
+    "name": "Трара",
+    "style": "orcish",
+    "source": "expanded_v3",
+    "gender": "female"
+  },
+  {
+    "name": "Огру",
+    "style": "orcish",
+    "source": "expanded_v3",
+    "gender": "female"
+  },
+  {
+    "name": "Узгоб",
+    "style": "orcish",
+    "source": "expanded",
+    "gender": "male"
+  },
+  {
+    "name": "Угнаш",
+    "style": "orcish",
+    "source": "expanded_v3",
+    "gender": "male"
+  },
+  {
+    "name": "Урма",
+    "style": "orcish",
+    "source": "expanded_v3",
+    "gender": "female"
+  },
+  {
+    "name": "Гуларз",
+    "style": "orcish",
+    "source": "expanded",
+    "gender": "male"
+  },
+  {
+    "name": "Урграт",
+    "style": "orcish",
+    "source": "expanded",
+    "gender": "male"
+  },
+  {
+    "name": "Гришнак",
+    "style": "orcish",
+    "source": "seed",
+    "gender": "male"
+  },
+  {
+    "name": "Могру",
+    "style": "orcish",
+    "source": "expanded_v3",
+    "gender": "female"
+  },
+  {
+    "name": "Могрул",
+    "style": "orcish",
+    "source": "expanded_v3",
+    "gender": "male"
+  },
+  {
+    "name": "Гузгат",
+    "style": "orcish",
+    "source": "seed",
+    "gender": "male"
+  },
+  {
+    "name": "Раглуг",
+    "style": "orcish",
+    "source": "expanded_v3",
+    "gender": "male"
+  },
+  {
+    "name": "Уграт",
+    "style": "orcish",
+    "source": "expanded_v3",
+    "gender": "male"
+  },
+  {
+    "name": "Мальгрим",
+    "style": "orcish",
+    "source": "expanded",
+    "gender": "male"
   },
   {
     "name": "Урук",
     "style": "orcish",
-    "source": "expanded"
+    "source": "expanded",
+    "gender": "male"
   },
   {
-    "name": "Оргрим",
+    "name": "Труглук",
     "style": "orcish",
-    "source": "expanded"
+    "source": "expanded_v3",
+    "gender": "male"
   },
   {
-    "name": "Горбуз",
+    "name": "Лурза",
     "style": "orcish",
-    "source": "expanded"
+    "source": "expanded_v3",
+    "gender": "female"
   },
   {
-    "name": "Варок",
+    "name": "Урукна",
     "style": "orcish",
-    "source": "expanded"
+    "source": "expanded_v3",
+    "gender": "female"
   },
   {
-    "name": "Ургул",
+    "name": "Моргул",
     "style": "orcish",
-    "source": "seed"
+    "source": "expanded",
+    "gender": "male"
   },
   {
-    "name": "Гнашрак",
+    "name": "Траклуг",
     "style": "orcish",
-    "source": "expanded"
+    "source": "expanded_v3",
+    "gender": "male"
   },
   {
-    "name": "Теронгор",
-    "style": "orcish",
-    "source": "expanded"
-  },
-  {
-    "name": "Угр",
-    "style": "orcish",
-    "source": "expanded"
-  },
-  {
-    "name": "Крогнак",
-    "style": "orcish",
-    "source": "expanded"
-  },
-  {
-    "name": "Харзог",
-    "style": "orcish",
-    "source": "expanded"
-  },
-  {
-    "name": "Громгул",
-    "style": "orcish",
-    "source": "expanded"
-  },
-  {
-    "name": "Грохар",
-    "style": "orcish",
-    "source": "seed"
-  },
-  {
-    "name": "Снаглак",
-    "style": "orcish",
-    "source": "expanded"
-  },
-  {
-    "name": "Орзул",
-    "style": "orcish",
-    "source": "seed"
-  },
-  {
-    "name": "Тарг",
-    "style": "orcish",
-    "source": "expanded"
-  },
-  {
-    "name": "Гриш",
-    "style": "orcish",
-    "source": "expanded"
-  },
-  {
-    "name": "Горбог",
-    "style": "orcish",
-    "source": "expanded"
-  },
-  {
-    "name": "Зулухед",
-    "style": "orcish",
-    "source": "expanded"
-  },
-  {
-    "name": "Агнар",
+    "name": "Гнупа",
     "style": "northern",
-    "source": "expanded"
+    "source": "expanded",
+    "gender": "female"
   },
   {
-    "name": "Олаф",
+    "name": "Джорунн",
     "style": "northern",
-    "source": "seed"
+    "source": "expanded",
+    "gender": "male"
   },
   {
-    "name": "Еивинд",
+    "name": "Торе",
     "style": "northern",
-    "source": "expanded"
+    "source": "expanded",
+    "gender": "male"
   },
   {
-    "name": "Хамунд",
+    "name": "Стир",
     "style": "northern",
-    "source": "expanded"
+    "source": "expanded",
+    "gender": "male"
   },
   {
-    "name": "Хрольф",
+    "name": "Еистэйн",
     "style": "northern",
-    "source": "seed"
+    "source": "expanded",
+    "gender": "male"
   },
   {
-    "name": "Грим",
+    "name": "Фредрик",
     "style": "northern",
-    "source": "expanded"
+    "source": "expanded_v3",
+    "gender": "male"
   },
   {
-    "name": "Торстен",
+    "name": "Ранди",
     "style": "northern",
-    "source": "expanded"
+    "source": "expanded_v3",
+    "gender": "female"
   },
   {
-    "name": "Гисле",
+    "name": "Гуннбджорн",
     "style": "northern",
-    "source": "expanded"
+    "source": "expanded",
+    "gender": "male"
   },
   {
-    "name": "Офэйг",
+    "name": "Торбджорн",
     "style": "northern",
-    "source": "expanded"
-  },
-  {
-    "name": "Ингемар",
-    "style": "northern",
-    "source": "expanded"
-  },
-  {
-    "name": "Бьярни",
-    "style": "northern",
-    "source": "seed"
-  },
-  {
-    "name": "Вегард",
-    "style": "northern",
-    "source": "expanded"
-  },
-  {
-    "name": "Даг",
-    "style": "northern",
-    "source": "expanded"
-  },
-  {
-    "name": "Хедин",
-    "style": "northern",
-    "source": "expanded"
-  },
-  {
-    "name": "Стэйнмод",
-    "style": "northern",
-    "source": "expanded"
-  },
-  {
-    "name": "Хрут",
-    "style": "northern",
-    "source": "expanded"
-  },
-  {
-    "name": "Стэйнунн",
-    "style": "northern",
-    "source": "expanded"
-  },
-  {
-    "name": "Морд",
-    "style": "northern",
-    "source": "expanded"
-  },
-  {
-    "name": "Сольвэйг",
-    "style": "northern",
-    "source": "expanded"
+    "source": "expanded",
+    "gender": "male"
   },
   {
     "name": "Триггви",
     "style": "northern",
-    "source": "expanded"
+    "source": "expanded",
+    "gender": "male"
+  },
+  {
+    "name": "Хунбоги",
+    "style": "northern",
+    "source": "expanded",
+    "gender": "male"
+  },
+  {
+    "name": "Игул",
+    "style": "northern",
+    "source": "expanded",
+    "gender": "male"
+  },
+  {
+    "name": "Гудмунд",
+    "style": "northern",
+    "source": "expanded",
+    "gender": "male"
+  },
+  {
+    "name": "Эрик",
+    "style": "northern",
+    "source": "seed",
+    "gender": "male"
+  },
+  {
+    "name": "Инги",
+    "style": "northern",
+    "source": "expanded",
+    "gender": "male"
+  },
+  {
+    "name": "Вегард",
+    "style": "northern",
+    "source": "expanded",
+    "gender": "male"
+  },
+  {
+    "name": "Ельса",
+    "style": "northern",
+    "source": "expanded_v3",
+    "gender": "female"
+  },
+  {
+    "name": "Торфи",
+    "style": "northern",
+    "source": "expanded",
+    "gender": "male"
+  },
+  {
+    "name": "Сольмунд",
+    "style": "northern",
+    "source": "expanded",
+    "gender": "male"
+  },
+  {
+    "name": "Бьорнар",
+    "style": "northern",
+    "source": "seed",
+    "gender": "male"
+  },
+  {
+    "name": "Ода",
+    "style": "northern",
+    "source": "expanded_v3",
+    "gender": "female"
+  },
+  {
+    "name": "Викинг",
+    "style": "northern",
+    "source": "expanded",
+    "gender": "male"
+  },
+  {
+    "name": "Сигни",
+    "style": "northern",
+    "source": "expanded",
+    "gender": "male"
+  },
+  {
+    "name": "Бэйнир",
+    "style": "northern",
+    "source": "expanded",
+    "gender": "male"
+  },
+  {
+    "name": "Хальльбджорн",
+    "style": "northern",
+    "source": "expanded",
+    "gender": "male"
+  },
+  {
+    "name": "Андор",
+    "style": "northern",
+    "source": "expanded",
+    "gender": "male"
+  },
+  {
+    "name": "Даг",
+    "style": "northern",
+    "source": "expanded",
+    "gender": "male"
+  },
+  {
+    "name": "Хджорт",
+    "style": "northern",
+    "source": "expanded",
+    "gender": "male"
   },
   {
     "name": "Гамли",
     "style": "northern",
-    "source": "expanded"
+    "source": "expanded",
+    "gender": "male"
   },
   {
-    "name": "Лэйдольф",
+    "name": "Марит",
     "style": "northern",
-    "source": "expanded"
+    "source": "expanded_v3",
+    "gender": "female"
   },
   {
-    "name": "Роск",
+    "name": "Фроди",
     "style": "northern",
-    "source": "expanded"
+    "source": "expanded",
+    "gender": "male"
   },
   {
-    "name": "Хермунд",
+    "name": "Леннарт",
     "style": "northern",
-    "source": "expanded"
+    "source": "expanded",
+    "gender": "male"
   },
   {
-    "name": "Хенрик",
+    "name": "Ингер",
     "style": "northern",
-    "source": "expanded"
+    "source": "expanded_v3",
+    "gender": "female"
   },
   {
-    "name": "Бродди",
-    "style": "northern",
-    "source": "expanded"
-  },
-  {
-    "name": "Вали",
-    "style": "northern",
-    "source": "expanded"
-  },
-  {
-    "name": "Торгерд",
-    "style": "northern",
-    "source": "expanded"
-  },
-  {
-    "name": "Сварт",
-    "style": "northern",
-    "source": "expanded"
-  },
-  {
-    "name": "Эйнар",
-    "style": "northern",
-    "source": "expanded"
-  },
-  {
-    "name": "Родольфо",
+    "name": "Гиневра",
     "style": "southern",
-    "source": "expanded"
+    "source": "expanded_v3",
+    "gender": "female"
   },
   {
-    "name": "Освальдо",
+    "name": "Федерика",
     "style": "southern",
-    "source": "expanded"
+    "source": "expanded_v3",
+    "gender": "female"
   },
   {
-    "name": "Антонино",
+    "name": "Тебальдо",
     "style": "southern",
-    "source": "expanded"
+    "source": "expanded",
+    "gender": "male"
   },
   {
-    "name": "Фортунато",
+    "name": "Нандо",
     "style": "southern",
-    "source": "expanded"
+    "source": "expanded",
+    "gender": "male"
   },
   {
-    "name": "Оттоне",
+    "name": "Карина",
     "style": "southern",
-    "source": "expanded"
+    "source": "expanded_v3",
+    "gender": "female"
   },
   {
-    "name": "Скипионе",
+    "name": "Карлотта",
     "style": "southern",
-    "source": "expanded"
+    "source": "expanded_v3",
+    "gender": "female"
   },
   {
-    "name": "Примо",
+    "name": "Клементе",
     "style": "southern",
-    "source": "expanded"
+    "source": "expanded",
+    "gender": "male"
   },
   {
-    "name": "Алонзо",
+    "name": "Джавиэр",
     "style": "southern",
-    "source": "expanded"
+    "source": "expanded",
+    "gender": "male"
   },
   {
-    "name": "Ванни",
+    "name": "Лукиано",
     "style": "southern",
-    "source": "expanded"
-  },
-  {
-    "name": "Тиберио",
-    "style": "southern",
-    "source": "expanded"
-  },
-  {
-    "name": "Ферруккио",
-    "style": "southern",
-    "source": "expanded"
-  },
-  {
-    "name": "Федерико",
-    "style": "southern",
-    "source": "seed"
-  },
-  {
-    "name": "Торкуато",
-    "style": "southern",
-    "source": "expanded"
-  },
-  {
-    "name": "Тибальдо",
-    "style": "southern",
-    "source": "expanded"
-  },
-  {
-    "name": "Коррадо",
-    "style": "southern",
-    "source": "expanded"
-  },
-  {
-    "name": "Пиэтро",
-    "style": "southern",
-    "source": "expanded"
-  },
-  {
-    "name": "Розарио",
-    "style": "southern",
-    "source": "seed"
-  },
-  {
-    "name": "Ензо",
-    "style": "southern",
-    "source": "expanded"
-  },
-  {
-    "name": "Ульрико",
-    "style": "southern",
-    "source": "expanded"
-  },
-  {
-    "name": "Гуидо",
-    "style": "southern",
-    "source": "expanded"
-  },
-  {
-    "name": "Орландо",
-    "style": "southern",
-    "source": "expanded"
-  },
-  {
-    "name": "Алессандро",
-    "style": "southern",
-    "source": "expanded"
-  },
-  {
-    "name": "Уго",
-    "style": "southern",
-    "source": "expanded"
-  },
-  {
-    "name": "Массимо",
-    "style": "southern",
-    "source": "expanded"
-  },
-  {
-    "name": "Зено",
-    "style": "southern",
-    "source": "expanded"
-  },
-  {
-    "name": "Роландо",
-    "style": "southern",
-    "source": "expanded"
-  },
-  {
-    "name": "Сирио",
-    "style": "southern",
-    "source": "expanded"
-  },
-  {
-    "name": "Росарио",
-    "style": "southern",
-    "source": "expanded"
-  },
-  {
-    "name": "Фиорельло",
-    "style": "southern",
-    "source": "expanded"
-  },
-  {
-    "name": "Натале",
-    "style": "southern",
-    "source": "expanded"
-  },
-  {
-    "name": "Гиованнино",
-    "style": "southern",
-    "source": "expanded"
+    "source": "expanded",
+    "gender": "male"
   },
   {
     "name": "Помпео",
     "style": "southern",
-    "source": "expanded"
+    "source": "expanded",
+    "gender": "male"
   },
   {
-    "name": "Едуардо",
+    "name": "Альфонсо",
     "style": "southern",
-    "source": "expanded"
+    "source": "expanded",
+    "gender": "male"
   },
   {
-    "name": "Отельло",
+    "name": "Ламберто",
     "style": "southern",
-    "source": "expanded"
+    "source": "expanded",
+    "gender": "male"
+  },
+  {
+    "name": "Гианна",
+    "style": "southern",
+    "source": "expanded_v3",
+    "gender": "female"
+  },
+  {
+    "name": "Ренато",
+    "style": "southern",
+    "source": "expanded",
+    "gender": "male"
+  },
+  {
+    "name": "Ернесто",
+    "style": "southern",
+    "source": "expanded",
+    "gender": "male"
+  },
+  {
+    "name": "Сантиаго",
+    "style": "southern",
+    "source": "expanded",
+    "gender": "male"
+  },
+  {
+    "name": "Фиорельло",
+    "style": "southern",
+    "source": "expanded",
+    "gender": "male"
+  },
+  {
+    "name": "Росарио",
+    "style": "southern",
+    "source": "expanded",
+    "gender": "male"
+  },
+  {
+    "name": "Сфорза",
+    "style": "southern",
+    "source": "expanded",
+    "gender": "female"
+  },
+  {
+    "name": "Манлио",
+    "style": "southern",
+    "source": "expanded",
+    "gender": "male"
+  },
+  {
+    "name": "Сирио",
+    "style": "southern",
+    "source": "expanded",
+    "gender": "male"
+  },
+  {
+    "name": "Гиоргиа",
+    "style": "southern",
+    "source": "expanded_v3",
+    "gender": "female"
+  },
+  {
+    "name": "Бенито",
+    "style": "southern",
+    "source": "expanded",
+    "gender": "male"
+  },
+  {
+    "name": "Алонзо",
+    "style": "southern",
+    "source": "expanded",
+    "gender": "male"
+  },
+  {
+    "name": "Николо",
+    "style": "southern",
+    "source": "expanded",
+    "gender": "male"
+  },
+  {
+    "name": "Густаво",
+    "style": "southern",
+    "source": "expanded",
+    "gender": "male"
+  },
+  {
+    "name": "Гильберто",
+    "style": "southern",
+    "source": "expanded",
+    "gender": "male"
+  },
+  {
+    "name": "Пиэтро",
+    "style": "southern",
+    "source": "expanded",
+    "gender": "male"
+  },
+  {
+    "name": "Фернандо",
+    "style": "southern",
+    "source": "expanded",
+    "gender": "male"
+  },
+  {
+    "name": "Луигино",
+    "style": "southern",
+    "source": "expanded",
+    "gender": "male"
+  },
+  {
+    "name": "Тито",
+    "style": "southern",
+    "source": "expanded",
+    "gender": "male"
+  },
+  {
+    "name": "Ренальдо",
+    "style": "southern",
+    "source": "seed",
+    "gender": "male"
+  },
+  {
+    "name": "Оттавио",
+    "style": "southern",
+    "source": "expanded",
+    "gender": "male"
+  },
+  {
+    "name": "Гиулио",
+    "style": "southern",
+    "source": "expanded",
+    "gender": "male"
+  },
+  {
+    "name": "Алессандро",
+    "style": "southern",
+    "source": "expanded",
+    "gender": "male"
+  },
+  {
+    "name": "Елигио",
+    "style": "southern",
+    "source": "expanded_v3",
+    "gender": "male"
+  },
+  {
+    "name": "Маркельла",
+    "style": "southern",
+    "source": "expanded_v3",
+    "gender": "female"
+  },
+  {
+    "name": "Сальваторе",
+    "style": "southern",
+    "source": "expanded",
+    "gender": "male"
+  },
+  {
+    "name": "Виргилио",
+    "style": "southern",
+    "source": "expanded",
+    "gender": "male"
   }
 ]

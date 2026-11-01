@@ -27,13 +27,14 @@ def _style_label(style: str) -> str:
 
 def _fmt_meta(s) -> str:
     sc = s.scores
+    gender_icon = "♂" if s.gender == "male" else "♀"
     return (
         f"🎨 Style **{sc['style']:.0%}** · "
         f"🔮 Novelty **{sc['novelty']:.0%}** · "
         f"📖 Plaus **{sc['plausibility']:.0%}** · "
         f"⭐ Total **{sc['total']:.2f}**  \n"
         f"📐 Слоги: {s.breakdown['syllables']} · "
-        f"Паттерн: `{s.breakdown['pattern']}`"
+        f"Паттерн: `{s.breakdown['pattern']}` · Пол: {gender_icon}"
     )
 
 
@@ -112,6 +113,13 @@ def build_app(pipeline_factory, city_pipeline_factory=None,
                         style_dd = gr.Dropdown(
                             choices=[(_style_label(s), s) for s in STYLES],
                             value="elven", label="🎨 Стиль",
+                        )
+                        gender_radio = gr.Radio(
+                            choices=[("♂ Мужской", "male"),
+                                     ("♀ Женский", "female"),
+                                     ("🎲 Случайный", "random")],
+                            value="male",
+                            label="⚧ Пол",
                         )
                         syllables_slider = gr.Slider(
                             1, 6, 2, step=1, label="🔤 Слоги",
@@ -247,9 +255,7 @@ def build_app(pipeline_factory, city_pipeline_factory=None,
                 if city_pipeline_factory is not None:
                     build_city_tab(city_pipeline_factory, root)
                 else:
-                    gr.Markdown(
-                        "⚠️ Генератор городов не подключён."
-                    )
+                    gr.Markdown("⚠️ Генератор городов не подключён.")
 
             with gr.Tab("🔬 Исследователь", id="res_tab",
                         visible=False) as res_tab:
@@ -295,7 +301,7 @@ def build_app(pipeline_factory, city_pipeline_factory=None,
             fn=on_mode_change, inputs=[mode_switch], outputs=mode_outputs,
         )
 
-        def on_generate(mode, style, syllables, count, seed,
+        def on_generate(mode, style, gender, syllables, count, seed,
                         temperature, top_k, top_p,
                         w_style, w_novelty, w_plaus):
             try:
@@ -318,7 +324,7 @@ def build_app(pipeline_factory, city_pipeline_factory=None,
             try:
                 results = pipeline.generate(
                     style=style, syllables=int(syllables),
-                    count=int(count),
+                    count=int(count), gender=gender,
                     seed=int(seed) if seed is not None else None,
                     temperature=float(temperature),
                     top_k=int(top_k), top_p=float(top_p),
@@ -356,10 +362,14 @@ def build_app(pipeline_factory, city_pipeline_factory=None,
             updates.append(gr.update(value=""))
 
             if results:
+                gender_label = {
+                    "male": "♂", "female": "♀", "random": "🎲"
+                }.get(gender, "")
                 mode_tag = "🔮 defense" if is_def else "✍️ writer"
                 status_text = (
                     f"✅ **{len(results)}** имён · "
-                    f"{_style_label(style)} · слогов {syllables} · {mode_tag}"
+                    f"{_style_label(style)} {gender_label} · "
+                    f"слогов {syllables} · {mode_tag}"
                 )
             else:
                 status_text = (
@@ -377,9 +387,10 @@ def build_app(pipeline_factory, city_pipeline_factory=None,
 
         generate_btn.click(
             fn=on_generate,
-            inputs=[mode_switch, style_dd, syllables_slider, count_slider,
-                    seed_tb, temperature_slider, top_k_slider, top_p_slider,
-                    w_style_slider, w_novelty_slider, w_plaus_slider],
+            inputs=[mode_switch, style_dd, gender_radio, syllables_slider,
+                    count_slider, seed_tb, temperature_slider, top_k_slider,
+                    top_p_slider, w_style_slider, w_novelty_slider,
+                    w_plaus_slider],
             outputs=gen_outputs,
         )
 
@@ -427,7 +438,7 @@ def build_app(pipeline_factory, city_pipeline_factory=None,
                 outputs=[explain_panel],
             )
 
-        def make_vote_handler(vote: str):
+        def make_vote_handler(vote):
             def handler(name, style):
                 if not name:
                     return "⚠️ Пустое имя"
