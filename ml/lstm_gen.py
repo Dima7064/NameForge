@@ -48,11 +48,10 @@ class LSTMNameGen(nn.Module):
         self.head = nn.Linear(hidden_size, vocab_size)
 
     def forward(self, x: torch.Tensor, styles: torch.Tensor, hidden=None):
-        """x: (B, T) индексы; styles: (B,) id. Возвращает logits (B, T, vocab)."""
-        emb = self.char_emb(x)                                   # (B, T, emb)
-        st = self.style_emb(styles).unsqueeze(1)                 # (B, 1, style_emb)
-        st = st.expand(-1, x.size(1), -1)                        # (B, T, style_emb)
-        inp = torch.cat([emb, st], dim=-1)                       # (B, T, emb+style_emb)
+        emb = self.char_emb(x)
+        st = self.style_emb(styles).unsqueeze(1)
+        st = st.expand(-1, x.size(1), -1)
+        inp = torch.cat([emb, st], dim=-1)
         out, hidden = self.lstm(inp, hidden)
         logits = self.head(self.dropout(out))
         return logits, hidden
@@ -75,7 +74,6 @@ def encode_name(name: str, stoi: dict[str, int]) -> list[int]:
 
 def make_batches(data: list[dict], batch_size: int, stoi: dict[str, int],
                  rng: random.Random):
-    """Yields (x, y, styles): x — входные индексы, y — сдвинутые на 1 (цели)."""
     samples = [
         (encode_name(d["name"], stoi), STYLE_TO_ID[d["style"]]) for d in data
     ]
@@ -101,9 +99,7 @@ def train_lstm(train_data: list[dict], val_data: list[dict],
     """Обучает LSTM и возвращает (model, itos, stoi, history).
 
     vocab_data: данные для построения СЛОВАРЯ СИМВОЛОВ (по умолчанию train+val).
-    Обучение всегда идёт только на train_data. Включение val/test в vocab_data —
-    это НЕ утечка, а описание алфавита: модель просто знает, что такие символы
-    в языке существуют.
+    Обучение всегда идёт только на train_data.
     """
     if vocab_data is None:
         vocab_data = train_data + val_data
@@ -122,7 +118,6 @@ def train_lstm(train_data: list[dict], val_data: list[dict],
     history = {"train_loss": [], "val_loss": [], "train_ppl": [], "val_ppl": []}
 
     for epoch in range(1, epochs + 1):
-        # ----- train -----
         model.train()
         rng = random.Random(seed + epoch)
         train_losses = []
@@ -136,7 +131,6 @@ def train_lstm(train_data: list[dict], val_data: list[dict],
             train_losses.append(loss.item())
         train_loss = sum(train_losses) / max(1, len(train_losses))
 
-        # ----- val -----
         model.eval()
         val_losses = []
         with torch.no_grad():
@@ -156,7 +150,6 @@ def train_lstm(train_data: list[dict], val_data: list[dict],
                   f"train loss {train_loss:.4f} (ppl {history['train_ppl'][-1]:.2f}) | "
                   f"val loss {val_loss:.4f} (ppl {history['val_ppl'][-1]:.2f})")
 
-        # ----- early stopping -----
         if val_loss < best_val - 1e-4:
             best_val = val_loss
             best_state = {k: v.clone() for k, v in model.state_dict().items()}
@@ -180,13 +173,6 @@ def sample(model: LSTMNameGen, itos: list[str], stoi: dict[str, int],
            style: str, temperature: float = 0.8, top_k: int = 40,
            top_p: float = 0.9, seed: int | None = None,
            max_len: int = 25) -> str:
-    """Генерирует одно имя заданного стиля.
-
-    temperature: <1 — «увереннее», >1 — «хаотичнее». 0.8 — стандарт.
-    top_k: обрезать до k самых вероятных символов (0 — отключить).
-    top_p: nucleus sampling — оставить минимальный набор, чья сумма ≥ p.
-    seed: для воспроизводимости (None — случайно).
-    """
     model.eval()
 
     if seed is not None:
@@ -204,7 +190,6 @@ def sample(model: LSTMNameGen, itos: list[str], stoi: dict[str, int],
         logits, hidden = model(x, s, hidden)
         logits = logits[:, -1, :] / max(1e-6, temperature)
 
-        # top-k
         if top_k > 0 and top_k < logits.size(-1):
             v, _ = torch.topk(logits, top_k)
             threshold = v[:, -1].unsqueeze(-1)
@@ -214,7 +199,6 @@ def sample(model: LSTMNameGen, itos: list[str], stoi: dict[str, int],
 
         probs = F.softmax(logits, dim=-1).squeeze(0)
 
-        # top-p (nucleus)
         if 0.0 < top_p < 1.0:
             sorted_probs, sorted_idx = torch.sort(probs, descending=True)
             cumsum = torch.cumsum(sorted_probs, dim=0)
@@ -222,8 +206,9 @@ def sample(model: LSTMNameGen, itos: list[str], stoi: dict[str, int],
             sorted_probs = sorted_probs.masked_fill(mask, 0.0)
             probs = torch.zeros_like(probs).scatter(0, sorted_idx, sorted_probs)
 
-        # PAD никогда не должен выбираться
+        # Служебные токены не должны попадать в результат.
         probs[PAD] = 0.0
+        probs[BOS] = 0.0
         if probs.sum() <= 0:
             break
         probs = probs / probs.sum()
