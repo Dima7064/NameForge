@@ -1,52 +1,652 @@
 [
   {
-    "name": "Мелиан",
+    "name": "Трандуил",
     "style": "elven",
     "source": "seed"
   },
   {
-    "name": "Элронд",
+    "name": "Амротос",
+    "style": "elven",
+    "source": "expanded"
+  },
+  {
+    "name": "Лальвен",
+    "style": "elven",
+    "source": "expanded"
+  },
+  {
+    "name": "Белектор",
+    "style": "elven",
+    "source": "expanded"
+  },
+  {
+    "name": "Турин",
+    "style": "elven",
+    "source": "expanded"
+  },
+  {
+    "name": "Хальлас",
+    "style": "elven",
+    "source": "expanded"
+  },
+  {
+    "name": "Ерестор",
+    "style": "elven",
+    "source": "expanded"
+  },
+  {
+    "name": "Аэльронд",
+    "style": "elven",
+    "source": "expanded"
+  },
+  {
+    "name": "Галатил",
+    "style": "elven",
+    "source": "expanded"
+  },
+  {
+    "name": "Кирион",
+    "style": "elven",
+    "source": "expanded"
+  },
+  {
+    "name": "Аэлитил",
+    "style": "elven",
+    "source": "expanded"
+  },
+  {
+    "name": "Тургон",
+    "style": "elven",
+    "source": "expanded"
+  },
+  {
+    "name": "Тарминастир",
+    "style": "elven",
+    "source": "expanded"
+  },
+  {
+    "name": "Кастамир",
+    "style": "elven",
+    "source": "expanded"
+  },
+  {
+    "name": "Куруфин",
+    "style": "elven",
+    "source": "expanded"
+  },
+  {
+    "name": "Ерельлонт",
+    "style": "elven",
+    "source": "expanded"
+  },
+  {
+    "name": "Туор",
+    "style": "elven",
+    "source": "expanded"
+  },
+  {
+    "name": "Амрас",
+    "style": "elven",
+    "source": "expanded"
+  },
+  {
+    "name": "Марач",
+    "style": "elven",
+    "source": "expanded"
+  },
+  {
+    "name": "Даэрон",
+    "style": "elven",
+    "source": "expanded"
+  },
+  {
+    "name": "Хатольдир",
+    "style": "elven",
+    "source": "expanded"
+  },
+  {
+    "name": "Тарменельдур",
+    "style": "elven",
+    "source": "expanded"
+  },
+  {
+    "name": "Сильванор",
     "style": "elven",
     "source": "seed"
   },
   {
-    "name": "Луи",
+    "name": "Берегонд",
+    "style": "elven",
+    "source": "expanded"
+  },
+  {
+    "name": "Исильмо",
+    "style": "elven",
+    "source": "expanded"
+  },
+  {
+    "name": "Сириондил",
+    "style": "elven",
+    "source": "expanded"
+  },
+  {
+    "name": "Даниэль",
+    "style": "human",
+    "source": "expanded"
+  },
+  {
+    "name": "Норберт",
+    "style": "human",
+    "source": "expanded"
+  },
+  {
+    "name": "Хорст",
+    "style": "human",
+    "source": "expanded"
+  },
+  {
+    "name": "Мичаэл",
+    "style": "human",
+    "source": "expanded"
+  },
+  {
+    "name": "Адам",
+    "style": "human",
+    "source": "expanded"
+  },
+  {
+    "name": "Роланд",
     "style": "human",
     "source": "seed"
   },
   {
-    "name": "Дитрих",
+    "name": "Раул",
+    "style": "human",
+    "source": "expanded"
+  },
+  {
+    "name": "Фабиан",
+    "style": "human",
+    "source": "expanded"
+  },
+  {
+    "name": "Мартин",
     "style": "human",
     "source": "seed"
   },
   {
-    "name": "Заргул",
-    "style": "orcish",
+    "name": "Александер",
+    "style": "human",
+    "source": "expanded"
+  },
+  {
+    "name": "Грегори",
+    "style": "human",
+    "source": "expanded"
+  },
+  {
+    "name": "Егберт",
+    "style": "human",
+    "source": "expanded"
+  },
+  {
+    "name": "Еугене",
+    "style": "human",
+    "source": "expanded"
+  },
+  {
+    "name": "Антони",
+    "style": "human",
+    "source": "expanded"
+  },
+  {
+    "name": "Монтагуе",
+    "style": "human",
+    "source": "expanded"
+  },
+  {
+    "name": "Лавренке",
+    "style": "human",
+    "source": "expanded"
+  },
+  {
+    "name": "Вольфганг",
+    "style": "human",
+    "source": "expanded"
+  },
+  {
+    "name": "Фриэдрич",
+    "style": "human",
+    "source": "expanded"
+  },
+  {
+    "name": "Ернест",
+    "style": "human",
+    "source": "expanded"
+  },
+  {
+    "name": "Гарольд",
+    "style": "human",
     "source": "seed"
   },
   {
-    "name": "Баргаш",
-    "style": "orcish",
+    "name": "Ульрич",
+    "style": "human",
+    "source": "expanded"
+  },
+  {
+    "name": "Натаниэль",
+    "style": "human",
+    "source": "expanded"
+  },
+  {
+    "name": "Лаурент",
+    "style": "human",
+    "source": "expanded"
+  },
+  {
+    "name": "Эдуард",
+    "style": "human",
     "source": "seed"
   },
   {
-    "name": "Бьярни",
+    "name": "Франклин",
+    "style": "human",
+    "source": "expanded"
+  },
+  {
+    "name": "Гришха",
+    "style": "orcish",
+    "source": "expanded"
+  },
+  {
+    "name": "Горзуг",
+    "style": "orcish",
+    "source": "expanded"
+  },
+  {
+    "name": "Узгит",
+    "style": "orcish",
+    "source": "expanded"
+  },
+  {
+    "name": "Харнак",
+    "style": "orcish",
+    "source": "expanded"
+  },
+  {
+    "name": "Гром",
+    "style": "orcish",
+    "source": "expanded"
+  },
+  {
+    "name": "Харзуг",
+    "style": "orcish",
+    "source": "expanded"
+  },
+  {
+    "name": "Саруман",
+    "style": "orcish",
+    "source": "expanded"
+  },
+  {
+    "name": "Майм",
+    "style": "orcish",
+    "source": "expanded"
+  },
+  {
+    "name": "Вуррзаг",
+    "style": "orcish",
+    "source": "expanded"
+  },
+  {
+    "name": "Горз",
+    "style": "orcish",
+    "source": "expanded"
+  },
+  {
+    "name": "Гольфимбул",
+    "style": "orcish",
+    "source": "expanded"
+  },
+  {
+    "name": "Мокграш",
+    "style": "orcish",
+    "source": "expanded"
+  },
+  {
+    "name": "Могр",
+    "style": "orcish",
+    "source": "expanded"
+  },
+  {
+    "name": "Эйтригг",
+    "style": "orcish",
+    "source": "expanded"
+  },
+  {
+    "name": "Гоел",
+    "style": "orcish",
+    "source": "expanded"
+  },
+  {
+    "name": "Хельльскреам",
+    "style": "orcish",
+    "source": "expanded"
+  },
+  {
+    "name": "Дуротан",
+    "style": "orcish",
+    "source": "expanded"
+  },
+  {
+    "name": "Уфтак",
+    "style": "orcish",
+    "source": "expanded"
+  },
+  {
+    "name": "Еистэйн",
+    "style": "northern",
+    "source": "expanded"
+  },
+  {
+    "name": "Дуфниальл",
+    "style": "northern",
+    "source": "expanded"
+  },
+  {
+    "name": "Сигрид",
+    "style": "northern",
+    "source": "expanded"
+  },
+  {
+    "name": "Мунан",
+    "style": "northern",
+    "source": "expanded"
+  },
+  {
+    "name": "Игул",
+    "style": "northern",
+    "source": "expanded"
+  },
+  {
+    "name": "Виги",
+    "style": "northern",
+    "source": "expanded"
+  },
+  {
+    "name": "Вандил",
+    "style": "northern",
+    "source": "expanded"
+  },
+  {
+    "name": "Рагнар",
     "style": "northern",
     "source": "seed"
   },
   {
-    "name": "Лейф",
+    "name": "Ильлуги",
     "style": "northern",
-    "source": "seed"
+    "source": "expanded"
   },
   {
-    "name": "Луизино",
+    "name": "Дженс",
+    "style": "northern",
+    "source": "expanded"
+  },
+  {
+    "name": "Альвар",
+    "style": "northern",
+    "source": "expanded"
+  },
+  {
+    "name": "Ингрид",
+    "style": "northern",
+    "source": "expanded"
+  },
+  {
+    "name": "Сольмунд",
+    "style": "northern",
+    "source": "expanded"
+  },
+  {
+    "name": "Сигтригг",
+    "style": "northern",
+    "source": "expanded"
+  },
+  {
+    "name": "Ларс",
+    "style": "northern",
+    "source": "expanded"
+  },
+  {
+    "name": "Ормр",
+    "style": "northern",
+    "source": "expanded"
+  },
+  {
+    "name": "Рэйст",
+    "style": "northern",
+    "source": "expanded"
+  },
+  {
+    "name": "Вигфус",
+    "style": "northern",
+    "source": "expanded"
+  },
+  {
+    "name": "Вонд",
+    "style": "northern",
+    "source": "expanded"
+  },
+  {
+    "name": "Кари",
+    "style": "northern",
+    "source": "expanded"
+  },
+  {
+    "name": "Аслак",
+    "style": "northern",
+    "source": "expanded"
+  },
+  {
+    "name": "Ранд",
+    "style": "northern",
+    "source": "expanded"
+  },
+  {
+    "name": "Хемминг",
+    "style": "northern",
+    "source": "expanded"
+  },
+  {
+    "name": "Вебджорн",
+    "style": "northern",
+    "source": "expanded"
+  },
+  {
+    "name": "Гэйр",
+    "style": "northern",
+    "source": "expanded"
+  },
+  {
+    "name": "Торе",
+    "style": "northern",
+    "source": "expanded"
+  },
+  {
+    "name": "Ветр",
+    "style": "northern",
+    "source": "expanded"
+  },
+  {
+    "name": "Торстэйн",
+    "style": "northern",
+    "source": "expanded"
+  },
+  {
+    "name": "Хальльбджорн",
+    "style": "northern",
+    "source": "expanded"
+  },
+  {
+    "name": "Толомео",
+    "style": "southern",
+    "source": "expanded"
+  },
+  {
+    "name": "Ромоло",
+    "style": "southern",
+    "source": "expanded"
+  },
+  {
+    "name": "Луиги",
+    "style": "southern",
+    "source": "expanded"
+  },
+  {
+    "name": "Уголино",
+    "style": "southern",
+    "source": "expanded"
+  },
+  {
+    "name": "Аугусто",
+    "style": "southern",
+    "source": "expanded"
+  },
+  {
+    "name": "Енрико",
+    "style": "southern",
+    "source": "expanded"
+  },
+  {
+    "name": "Никколо",
+    "style": "southern",
+    "source": "expanded"
+  },
+  {
+    "name": "Пино",
+    "style": "southern",
+    "source": "expanded"
+  },
+  {
+    "name": "Санчо",
     "style": "southern",
     "source": "seed"
   },
   {
-    "name": "Ренальдо",
+    "name": "Сантино",
+    "style": "southern",
+    "source": "expanded"
+  },
+  {
+    "name": "Вито",
+    "style": "southern",
+    "source": "expanded"
+  },
+  {
+    "name": "Альваро",
+    "style": "southern",
+    "source": "expanded"
+  },
+  {
+    "name": "Валериано",
+    "style": "southern",
+    "source": "expanded"
+  },
+  {
+    "name": "Ерколе",
+    "style": "southern",
+    "source": "expanded"
+  },
+  {
+    "name": "Гразиано",
+    "style": "southern",
+    "source": "expanded"
+  },
+  {
+    "name": "Никола",
+    "style": "southern",
+    "source": "expanded"
+  },
+  {
+    "name": "Париде",
+    "style": "southern",
+    "source": "expanded"
+  },
+  {
+    "name": "Фьоренцо",
     "style": "southern",
     "source": "seed"
+  },
+  {
+    "name": "Сперандио",
+    "style": "southern",
+    "source": "expanded"
+  },
+  {
+    "name": "Наркисо",
+    "style": "southern",
+    "source": "expanded"
+  },
+  {
+    "name": "Гастоне",
+    "style": "southern",
+    "source": "expanded"
+  },
+  {
+    "name": "Романо",
+    "style": "southern",
+    "source": "expanded"
+  },
+  {
+    "name": "Невио",
+    "style": "southern",
+    "source": "expanded"
+  },
+  {
+    "name": "Игназио",
+    "style": "southern",
+    "source": "expanded"
+  },
+  {
+    "name": "Родриго",
+    "style": "southern",
+    "source": "expanded"
+  },
+  {
+    "name": "Томмасо",
+    "style": "southern",
+    "source": "expanded"
+  },
+  {
+    "name": "Гуельфо",
+    "style": "southern",
+    "source": "expanded"
+  },
+  {
+    "name": "Ипполито",
+    "style": "southern",
+    "source": "expanded"
+  },
+  {
+    "name": "Несторе",
+    "style": "southern",
+    "source": "expanded"
+  },
+  {
+    "name": "Лаззаро",
+    "style": "southern",
+    "source": "expanded"
+  },
+  {
+    "name": "Транкуильло",
+    "style": "southern",
+    "source": "expanded"
+  },
+  {
+    "name": "Урбано",
+    "style": "southern",
+    "source": "expanded"
   }
 ]

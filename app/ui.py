@@ -1,15 +1,12 @@
 
-"""Единый UI NameForge: writer + defense mode + researcher tab.
-
-Компоненты разделены на core (видны всегда), defense-only (только в defense)
-и researcher tab (только в defense).
-"""
+"""Единый UI NameForge: writer + defense mode + researcher + города."""
 import random
 from pathlib import Path
 
 import gradio as gr
 
 from app import storage
+from app.city_ui import build_city_tab
 from app.researcher_ui import build_researcher_tab
 from ml.lstm_gen import STYLES
 
@@ -18,9 +15,9 @@ MAX_SLOTS = 50
 STYLE_LABELS = {
     "elven": "🧝 Эльфийский",
     "human": "🏰 Люди",
-    "orcish": "👹 Орочий",
-    "northern": "⛰️ Северный",
-    "southern": "🌊 Южный",
+    "orcish": "🪓 Орочий",
+    "northern": "❄️ Северный",
+    "southern": "☀️ Южный",
 }
 
 
@@ -76,13 +73,14 @@ def _fmt_explanation(exp: dict) -> str:
     return "\n".join(lines)
 
 
-def build_app(pipeline_factory, default_mode: str = "writer") -> gr.Blocks:
+def build_app(pipeline_factory, city_pipeline_factory=None,
+              default_mode: str = "writer") -> gr.Blocks:
     root = Path(__file__).resolve().parent.parent
     models_dir = root / "models"
     data_dir = root / "data"
 
     pipeline_holder = {"pipeline": None}
-    state = {"count": 0}  # сколько имён реально сгенерировано
+    state = {"count": 0}
 
     def get_pipeline():
         if pipeline_holder["pipeline"] is None:
@@ -90,13 +88,12 @@ def build_app(pipeline_factory, default_mode: str = "writer") -> gr.Blocks:
         return pipeline_holder["pipeline"]
 
     with gr.Blocks(title="⚔ Кузница Имён") as app:
-        # ---------- Шапка ----------
         with gr.Row(elem_classes=["app-title"]):
             with gr.Column(scale=3):
                 gr.HTML(
                     "<h1>⚔ Кузница Имён</h1>"
                     "<p style='color:#a89f8c;margin:0;font-size:0.95em;'>"
-                    "✨ Генератор фэнтези-имён с ML-пайплайном</p>"
+                    "✨ Генератор фэнтези-имён и городов</p>"
                 )
             with gr.Column(scale=1, min_width=260):
                 mode_switch = gr.Radio(
@@ -108,12 +105,8 @@ def build_app(pipeline_factory, default_mode: str = "writer") -> gr.Blocks:
                 )
 
         with gr.Tabs() as main_tabs:
-            # ============================================================
-            #                   ВКЛАДКА «ГЕНЕРАТОР»
-            # ============================================================
             with gr.Tab("⚔ Генератор", id="gen_tab"):
                 with gr.Row():
-                    # --- ЛЕВАЯ: фильтры ---
                     with gr.Column(scale=1, min_width=280):
                         gr.Markdown("### 🎛️ Фильтры")
                         style_dd = gr.Dropdown(
@@ -177,7 +170,6 @@ def build_app(pipeline_factory, default_mode: str = "writer") -> gr.Blocks:
                             elem_classes=["status-bar"],
                         )
 
-                    # --- ЦЕНТР: карточки ---
                     with gr.Column(scale=3, min_width=440):
                         gr.Markdown("### 📜 Результаты")
                         result_slots = []
@@ -225,7 +217,6 @@ def build_app(pipeline_factory, default_mode: str = "writer") -> gr.Blocks:
                             value="", elem_classes=["explain-panel"],
                         )
 
-                    # --- ПРАВАЯ: избранное ---
                     with gr.Column(scale=1, min_width=260,
                                    elem_classes=["favorites-panel"]):
                         gr.Markdown("### ⭐ Избранное")
@@ -252,16 +243,17 @@ def build_app(pipeline_factory, default_mode: str = "writer") -> gr.Blocks:
                             label="Скачать", visible=False,
                         )
 
-            # ============================================================
-            #                   ВКЛАДКА «ИССЛЕДОВАТЕЛЬ»
-            # ============================================================
+            with gr.Tab("🏰 Города", id="city_tab"):
+                if city_pipeline_factory is not None:
+                    build_city_tab(city_pipeline_factory, root)
+                else:
+                    gr.Markdown(
+                        "⚠️ Генератор городов не подключён."
+                    )
+
             with gr.Tab("🔬 Исследователь", id="res_tab",
                         visible=False) as res_tab:
                 build_researcher_tab(pipeline_factory, models_dir, data_dir)
-
-        # ============================================================
-        #                  Обработчики
-        # ============================================================
 
         def refresh_favorites_ui():
             favs = storage.load_favorites()
@@ -281,7 +273,6 @@ def build_app(pipeline_factory, default_mode: str = "writer") -> gr.Blocks:
             return random.randint(0, 2**31 - 1)
 
         def on_mode_change(mode):
-            """Переключает видимость defense-компонентов и вкладок."""
             is_def = (mode == "defense")
             updates = [gr.update(visible=is_def)]
             for i in range(MAX_SLOTS):
@@ -289,7 +280,7 @@ def build_app(pipeline_factory, default_mode: str = "writer") -> gr.Blocks:
                     visible=(is_def and i < state["count"])
                 ))
             updates.append(gr.update() if is_def else gr.update(value=""))
-            updates.append(gr.update(visible=is_def))  # res_tab
+            updates.append(gr.update(visible=is_def))
             if not is_def:
                 updates.append(gr.update(selected="gen_tab"))
             else:
@@ -362,7 +353,7 @@ def build_app(pipeline_factory, default_mode: str = "writer") -> gr.Blocks:
                         gr.update(value=""),
                         gr.update(visible=False),
                     ])
-            updates.append(gr.update(value=""))  # explain_panel
+            updates.append(gr.update(value=""))
 
             if results:
                 mode_tag = "🔮 defense" if is_def else "✍️ writer"

@@ -1,12 +1,4 @@
-
-"""LSTM-генератор фэнтези-имён с условием на стиль.
-
-Модель посимвольная: P(следующий символ | предыдущие + стиль).
-Используется:
-    - при обучении — train_lstm();
-    - при генерации — sample() (с temperature, top-k, top-p);
-    - при загрузке — load_lstm().
-"""
+"""LSTM-генератор фэнтези-имён с условием на стиль."""
 import json
 import random
 from pathlib import Path
@@ -15,18 +7,13 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-# Специальные индексы
 PAD, BOS, EOS = 0, 1, 2
 
 STYLES = ["elven", "human", "orcish", "northern", "southern"]
 STYLE_TO_ID = {s: i for i, s in enumerate(STYLES)}
 
 
-# ---------- модель ----------
-
 class LSTMNameGen(nn.Module):
-    """Embedding(символ) + Embedding(стиль) → LSTM → Linear(vocab)."""
-
     def __init__(self, vocab_size: int, hidden_size: int = 128,
                  emb_size: int = 64, style_emb_size: int = 32,
                  num_layers: int = 2, dropout: float = 0.2):
@@ -47,7 +34,7 @@ class LSTMNameGen(nn.Module):
         self.dropout = nn.Dropout(dropout)
         self.head = nn.Linear(hidden_size, vocab_size)
 
-    def forward(self, x: torch.Tensor, styles: torch.Tensor, hidden=None):
+    def forward(self, x, styles, hidden=None):
         emb = self.char_emb(x)
         st = self.style_emb(styles).unsqueeze(1)
         st = st.expand(-1, x.size(1), -1)
@@ -57,23 +44,18 @@ class LSTMNameGen(nn.Module):
         return logits, hidden
 
 
-# ---------- словарь ----------
-
-def build_vocab(names: list[str]) -> tuple[list[str], dict[str, int]]:
+def build_vocab(names):
     chars = sorted(set("".join(names)))
     itos = ["<PAD>", "<BOS>", "<EOS>"] + chars
     stoi = {c: i for i, c in enumerate(itos)}
     return itos, stoi
 
 
-def encode_name(name: str, stoi: dict[str, int]) -> list[int]:
+def encode_name(name, stoi):
     return [BOS] + [stoi[c] for c in name] + [EOS]
 
 
-# ---------- батчи ----------
-
-def make_batches(data: list[dict], batch_size: int, stoi: dict[str, int],
-                 rng: random.Random):
+def make_batches(data, batch_size, stoi, rng):
     samples = [
         (encode_name(d["name"], stoi), STYLE_TO_ID[d["style"]]) for d in data
     ]
@@ -90,17 +72,10 @@ def make_batches(data: list[dict], batch_size: int, stoi: dict[str, int],
         yield torch.tensor(xs), torch.tensor(ys), torch.tensor(styles)
 
 
-# ---------- обучение ----------
-
-def train_lstm(train_data: list[dict], val_data: list[dict],
-               vocab_data: list[dict] | None = None,
-               epochs: int = 150, lr: float = 1e-3, batch_size: int = 16,
-               patience: int = 15, seed: int = 42, verbose: bool = True):
-    """Обучает LSTM и возвращает (model, itos, stoi, history).
-
-    vocab_data: данные для построения СЛОВАРЯ СИМВОЛОВ (по умолчанию train+val).
-    Обучение всегда идёт только на train_data.
-    """
+def train_lstm(train_data, val_data, vocab_data=None,
+               epochs=150, lr=1e-3, batch_size=16,
+               weight_decay=1e-5,
+               patience=20, seed=42, verbose=True):
     if vocab_data is None:
         vocab_data = train_data + val_data
 
@@ -109,7 +84,8 @@ def train_lstm(train_data: list[dict], val_data: list[dict],
 
     itos, stoi = build_vocab([d["name"] for d in vocab_data])
     model = LSTMNameGen(vocab_size=len(itos))
-    optimizer = torch.optim.Adam(model.parameters(), lr=lr)
+    optimizer = torch.optim.Adam(model.parameters(), lr=lr,
+                                  weight_decay=weight_decay)
     criterion = nn.CrossEntropyLoss(ignore_index=PAD)
 
     best_val = float("inf")
@@ -145,7 +121,7 @@ def train_lstm(train_data: list[dict], val_data: list[dict],
         history["train_ppl"].append(float(torch.exp(torch.tensor(train_loss))))
         history["val_ppl"].append(float(torch.exp(torch.tensor(val_loss))))
 
-        if verbose:
+        if verbose and (epoch % 10 == 0 or epoch == 1):
             print(f"epoch {epoch:3d} | "
                   f"train loss {train_loss:.4f} (ppl {history['train_ppl'][-1]:.2f}) | "
                   f"val loss {val_loss:.4f} (ppl {history['val_ppl'][-1]:.2f})")
@@ -166,13 +142,9 @@ def train_lstm(train_data: list[dict], val_data: list[dict],
     return model, itos, stoi, history
 
 
-# ---------- сэмплирование ----------
-
 @torch.no_grad()
-def sample(model: LSTMNameGen, itos: list[str], stoi: dict[str, int],
-           style: str, temperature: float = 0.8, top_k: int = 40,
-           top_p: float = 0.9, seed: int | None = None,
-           max_len: int = 25) -> str:
+def sample(model, itos, stoi, style, temperature=0.8, top_k=40,
+           top_p=0.9, seed=None, max_len=40):
     model.eval()
 
     if seed is not None:
@@ -206,7 +178,6 @@ def sample(model: LSTMNameGen, itos: list[str], stoi: dict[str, int],
             sorted_probs = sorted_probs.masked_fill(mask, 0.0)
             probs = torch.zeros_like(probs).scatter(0, sorted_idx, sorted_probs)
 
-        # Служебные токены не должны попадать в результат.
         probs[PAD] = 0.0
         probs[BOS] = 0.0
         if probs.sum() <= 0:
@@ -222,10 +193,7 @@ def sample(model: LSTMNameGen, itos: list[str], stoi: dict[str, int],
     return result
 
 
-# ---------- сохранение/загрузка ----------
-
-def save_lstm(model: LSTMNameGen, itos: list[str], stoi: dict[str, int],
-              history: dict, path: Path) -> None:
+def save_lstm(model, itos, stoi, history, path):
     torch.save({
         "model_state": model.state_dict(),
         "itos": itos,
@@ -242,7 +210,7 @@ def save_lstm(model: LSTMNameGen, itos: list[str], stoi: dict[str, int],
     }, path)
 
 
-def load_lstm(path: Path) -> tuple[LSTMNameGen, list[str], dict[str, int]]:
+def load_lstm(path):
     ckpt = torch.load(path, map_location="cpu", weights_only=False)
     model = LSTMNameGen(**ckpt["config"])
     model.load_state_dict(ckpt["model_state"])

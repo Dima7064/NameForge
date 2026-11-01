@@ -1,9 +1,11 @@
+
 """Очистка и нормализация имён для NameForge.
 
 Правила:
 - Разрешены только кириллица (А-Я, а-я, Ё, ё), дефис, апостроф.
 - Первая буква заглавная, остальные строчные.
-- Длина 3–20 символов.
+- Минимальная длина 2 (пустые и однобуквенные отсеиваются).
+- Верхней границы по длине НЕТ — только по слогам (в пайплайне).
 - Дубликаты (без учёта регистра + стиль) удаляются.
 - Стиль должен быть одним из 5 допустимых.
 """
@@ -13,25 +15,21 @@ from collections import Counter
 from pathlib import Path
 
 VALID_CHARS = re.compile(r"^[А-ЯЁа-яё'\-]+$")
-MIN_LEN = 3
-MAX_LEN = 20
+MIN_LEN = 2
 VALID_STYLES = {"elven", "human", "orcish", "northern", "southern"}
 
 
 def normalize(name: str) -> str:
-    """Оставить только разрешённые символы, первая заглавная, остальные строчные."""
     name = name.strip()
-    # Умные кавычки → обычный апостроф
     name = name.replace("’", "'").replace("‘", "'")
     if not VALID_CHARS.match(name):
         raise ValueError(f"Недопустимые символы: {name!r}")
-    if not (MIN_LEN <= len(name) <= MAX_LEN):
-        raise ValueError(f"Длина {len(name)} вне 3–20: {name!r}")
+    if len(name) < MIN_LEN:
+        raise ValueError(f"Длина {len(name)} < {MIN_LEN}: {name!r}")
     return name[0].upper() + name[1:].lower()
 
 
 def preprocess(raw: list[dict]) -> list[dict]:
-    """Чистит, валидирует, дедуплицирует список имён."""
     seen = set()
     result = []
     for entry in raw:

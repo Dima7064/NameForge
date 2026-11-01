@@ -1,7 +1,12 @@
+
 """Стратифицированный сплит датасета на train/val/test.
 
 Стратификация: для каждого стиля отдельно режем 80/10/10, чтобы
 в каждом сплите были представлены все 5 стилей в правильных пропорциях.
+
+Важно: одно и то же имя может быть в разных стилях (например, «Эрик» —
+северное и орочье). Это НЕ утечка: модель должна научиться различать
+стили. Утечка = пересечение по (name, style) паре.
 """
 import json
 import random
@@ -31,6 +36,11 @@ def split(data: list[dict], train: float = 0.8, val: float = 0.1,
     return splits
 
 
+def _keys(items: list[dict]) -> set[tuple[str, str]]:
+    """Ключ для проверки утечки: (имя в нижнем регистре, стиль)."""
+    return {(e["name"].lower(), e["style"]) for e in items}
+
+
 if __name__ == "__main__":
     root = Path(__file__).resolve().parent.parent
     with (root / "data" / "names.json").open("r", encoding="utf-8") as f:
@@ -44,11 +54,15 @@ if __name__ == "__main__":
             json.dump(items, f, ensure_ascii=False, indent=2)
         print(f"{name}: {len(items)} → {path}")
 
-    # Проверка отсутствия утечки
-    train_names = {e["name"].lower() for e in splits["train"]}
-    val_names = {e["name"].lower() for e in splits["val"]}
-    test_names = {e["name"].lower() for e in splits["test"]}
-    assert not (train_names & val_names), "Утечка val в train!"
-    assert not (train_names & test_names), "Утечка test в train!"
-    assert not (val_names & test_names), "Утечка test в val!"
-    print("Утечек между сплитами нет.")
+    # Проверка отсутствия утечки — по (name, style), а не только по name.
+    # Одно и то же имя может быть в разных стилях — это нормально.
+    train_keys = _keys(splits["train"])
+    val_keys = _keys(splits["val"])
+    test_keys = _keys(splits["test"])
+    assert not (train_keys & val_keys), \
+        f"Утечка val в train: {(train_keys & val_keys)[:5]}"
+    assert not (train_keys & test_keys), \
+        f"Утечка test в train: {(train_keys & test_keys)[:5]}"
+    assert not (val_keys & test_keys), \
+        f"Утечка test в val: {(val_keys & test_keys)[:5]}"
+    print("Утечек (по (name, style)) между сплитами нет.")

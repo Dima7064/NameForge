@@ -1,25 +1,26 @@
 
 """Точка входа NameForge (Gradio 6).
 
-Запуск (из корня проекта, с активным venv):
+Запуск:
     python -m app.main
-
-CSS передаётся в launch() — так требует Gradio 6.
 """
 import json
 from pathlib import Path
 
+from app.city_pipeline import CityPipeline
 from app.pipeline import Pipeline
 from app.ui import build_app
 
 
 def pipeline_factory() -> Pipeline:
-    """Ленивая фабрика: Pipeline загрузит модели при первом вызове."""
     return Pipeline(model_type="lstm")
 
 
+def city_pipeline_factory() -> CityPipeline:
+    return CityPipeline()
+
+
 def _load_default_mode() -> str:
-    """Читает config.json; если что-то не так — writer."""
     cfg = Path(__file__).resolve().parent.parent / "config.json"
     if not cfg.exists():
         return "writer"
@@ -36,7 +37,11 @@ def main() -> None:
     css_path = root.parent / "assets" / "theme.css"
     css = css_path.read_text(encoding="utf-8") if css_path.exists() else ""
 
-    app = build_app(pipeline_factory, default_mode=_load_default_mode())
+    app = build_app(
+        pipeline_factory,
+        city_pipeline_factory=city_pipeline_factory,
+        default_mode=_load_default_mode(),
+    )
     app.launch(
         css=css,
         server_name="127.0.0.1",
