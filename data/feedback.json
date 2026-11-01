@@ -1,0 +1,22 @@
+{
+  "votes": [
+    {
+      "name": "Тарон",
+      "style": "human",
+      "vote": "up",
+      "ts": 1793547325
+    },
+    {
+      "name": "Тарон",
+      "style": "human",
+      "vote": "up",
+      "ts": 1793547327
+    },
+    {
+      "name": "Тарон",
+      "style": "human",
+      "vote": "down",
+      "ts": 1793547328
+    }
+  ]
+}
