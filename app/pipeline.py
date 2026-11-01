@@ -62,6 +62,26 @@ def _split_syllables(name: str) -> list[str]:
     return parts
 
 
+def _empty_explanation(name: str, target_style: str,
+                       error: str = "") -> dict:
+    """Заглушка для explain() на некорректном входе — не падаем."""
+    return {
+        "name": name,
+        "syllable_split": name,
+        "syllable_count": count_syllables(name),
+        "pattern": cv_pattern(name),
+        "diphthongs": [],
+        "ending": name[-3:] if len(name) >= 3 else name,
+        "filters_passed": [error] if error else [],
+        "comments": [],
+        "style_probs": {s: 0.0 for s in STYLES},
+        "scores": {
+            "style": 0.0, "novelty": 0.0,
+            "plausibility": 0.0, "total": 0.0,
+        },
+    }
+
+
 class Pipeline:
     def __init__(self, model_type: str = "lstm",
                  models_dir: Optional[Path] = None):
@@ -139,7 +159,6 @@ class Pipeline:
                             max_iterations: int = 3, w_style: float = 0.5,
                             w_novelty: float = 0.25, w_plaus: float = 0.25
                             ) -> tuple[list[ScoredName], dict]:
-        # ---- валидация ----
         if style not in STYLES:
             raise ValueError(f"Неизвестный стиль: {style!r}")
         if not (1 <= syllables <= 10):
@@ -194,6 +213,15 @@ class Pipeline:
     def explain(self, name: str, target_style: str,
                 w_style: float = 0.5, w_novelty: float = 0.25,
                 w_plaus: float = 0.25) -> dict:
+        # Защитные проверки: пустое имя и неизвестный стиль не должны
+        # ронять приложение (UI может прислать пустое поле).
+        if not name:
+            return _empty_explanation(name, target_style,
+                                      "пустое имя")
+        if target_style not in STYLES:
+            return _empty_explanation(name, target_style,
+                                      f"неизвестный стиль: {target_style}")
+
         style_probs = predict_proba(self.classifier, self.stoi_cls, name)
         style_score = style_probs[target_style]
         nov = self.novelty.score(name)

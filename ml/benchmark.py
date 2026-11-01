@@ -1,7 +1,10 @@
-"""Бенчмарк 4 моделей × 5 метрик для отчёта на защите."""
+
+"""Бенчмарк 4 моделей × 5 метрик для отчёта на защите.
+
+Модели загружаются один раз и кэшируются в _CACHE.
+"""
 import json
 import math
-import random
 from collections import Counter
 from pathlib import Path
 
@@ -14,25 +17,19 @@ from ml.report import count_syllables
 from ml.transformer_gen import load_transformer
 from ml.transformer_gen import sample as transformer_sample
 
-
-def _entropy(names: list[str]) -> float:
-    """Shannon entropy (bit) посимвольного распределения."""
-    counter = Counter(c for n in names for c in n.lower())
-    total = sum(counter.values())
-    if total == 0:
-        return 0.0
-    return -sum((c / total) * math.log2(c / total) for c in counter.values())
+_CACHE: dict = {}
 
 
-def benchmark(models_dir: Path, data_dir: Path,
-              n_per_style: int = 5, seed: int = 42) -> dict[str, dict]:
-    """Считает 5 метрик для 4 моделей."""
+def _get_models(models_dir: Path, data_dir: Path):
+    key = (str(models_dir), str(data_dir))
+    if key in _CACHE:
+        return _CACHE[key]
     with (data_dir / "train.json").open(encoding="utf-8") as f:
         train = json.load(f)
-    train_names = {d["name"].lower() for d in train}
     train_by_style: dict[str, list[str]] = {}
     for d in train:
         train_by_style.setdefault(d["style"], []).append(d["name"])
+    train_names = {d["name"].lower() for d in train}
 
     lstm_model, itos_l, stoi_l = load_lstm(models_dir / "lstm.pt")
     trans_model, itos_t, stoi_t = load_transformer(models_dir / "transformer.pt")
@@ -47,6 +44,37 @@ def benchmark(models_dir: Path, data_dir: Path,
         "LSTM": lstm_h["val_ppl"][-1],
         "Transformer": trans_h["val_ppl"][-1],
     }
+    payload = {
+        "train_names": train_names,
+        "train_by_style": train_by_style,
+        "lstm": (lstm_model, itos_l, stoi_l),
+        "trans": (trans_model, itos_t, stoi_t),
+        "classifier": (classifier, stoi_c),
+        "ppl": ppl_map,
+    }
+    _CACHE[key] = payload
+    return payload
+
+
+def _entropy(names: list[str]) -> float:
+    counter = Counter(c for n in names for c in n.lower())
+    total = sum(counter.values())
+    if total == 0:
+        return 0.0
+    return -sum((c / total) * math.log2(c / total) for c in counter.values())
+
+
+def benchmark(models_dir: Path, data_dir: Path,
+              n_per_style: int = 5, seed: int = 42) -> dict[str, dict]:
+    ctx = _get_models(models_dir, data_dir)
+    train_names = ctx["train_names"]
+    train_by_style = ctx["train_by_style"]
+    lstm_model, itos_l, stoi_l = ctx["lstm"]
+    trans_model, itos_t, stoi_t = ctx["trans"]
+    classifier, stoi_c = ctx["classifier"]
+    ppl_map = ctx["ppl"]
+
+    import random
 
     def gen_markov(style: str, s: int) -> str:
         m = MarkovModel(order=2)
