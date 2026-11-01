@@ -1,0 +1,301 @@
+
+/* ============================================================
+   NameForge — тёмная фэнтези-тема (современный дизайн)
+   ============================================================ */
+
+:root {
+  --bg:          #0b0c10;
+  --bg-2:        #151820;
+  --panel:       #1f232b;
+  --panel-hover: #2a2f3a;
+  --border:      #3a4150;
+  --border-acc:  rgba(201, 162, 39, 0.3);
+  --gold:        #c9a227;
+  --gold-light:  #e0b84c;
+  --gold-glow:   rgba(201, 162, 39, 0.4);
+  --crimson:     #8b1a1a;
+  --crimson-lt:  #b02525;
+  --text:        #e8e0d0;
+  --text-muted:  #a89f8c;
+  --radius:      12px;
+  --radius-sm:   8px;
+  --shadow-sm:   0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-md:   0 4px 16px rgba(0, 0, 0, 0.4);
+  --shadow-lg:   0 8px 24px rgba(0, 0, 0, 0.5);
+  --transition:  all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* === Base background === */
+body, .gradio-container {
+  background:
+    radial-gradient(circle at 15% 15%, rgba(201, 162, 39, 0.06) 0%, transparent 45%),
+    radial-gradient(circle at 85% 85%, rgba(139, 26, 26, 0.06) 0%, transparent 45%),
+    linear-gradient(135deg, var(--bg) 0%, var(--bg-2) 100%) !important;
+  background-attachment: fixed !important;
+  color: var(--text) !important;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+               Roboto, 'Helvetica Neue', sans-serif !important;
+  font-size: 15px !important;
+  line-height: 1.5 !important;
+  min-height: 100vh !important;
+}
+
+/* === Typography === */
+h1, h2, h3, h4, h5 {
+  font-family: 'Georgia', 'PT Serif', 'Times New Roman', serif !important;
+  color: var(--gold) !important;
+  letter-spacing: 0.5px !important;
+  font-weight: 700 !important;
+}
+
+h1 {
+  font-size: 2.2em !important;
+  margin: 0 0 0.2em 0 !important;
+  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-light) 100%);
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+  filter: drop-shadow(0 2px 8px rgba(201, 162, 39, 0.25)) !important;
+}
+
+h2 { font-size: 1.5em !important; margin: 1em 0 0.5em !important; }
+h3 { font-size: 1.15em !important; margin: 0.8em 0 0.5em !important; }
+
+/* === Panels === */
+.gr-panel, .gr-box, .gr-form, .gr-group, .gr-block {
+  background: rgba(31, 35, 43, 0.85) !important;
+  backdrop-filter: blur(10px) !important;
+  -webkit-backdrop-filter: blur(10px) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius) !important;
+  box-shadow: var(--shadow-sm) !important;
+}
+
+/* === Buttons === */
+button.gr-button {
+  background: var(--panel) !important;
+  color: var(--text) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius-sm) !important;
+  padding: 10px 18px !important;
+  font-weight: 500 !important;
+  font-family: inherit !important;
+  transition: var(--transition) !important;
+  box-shadow: var(--shadow-sm) !important;
+  letter-spacing: 0.2px !important;
+}
+
+button.gr-button:hover {
+  background: var(--panel-hover) !important;
+  border-color: var(--gold) !important;
+  color: var(--gold-light) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: var(--shadow-md) !important;
+}
+
+button.gr-button:active {
+  transform: translateY(0) !important;
+  box-shadow: var(--shadow-sm) !important;
+}
+
+/* Primary button (Сгенерировать) */
+button.gr-button.primary,
+button.gr-button.lg.primary {
+  background: linear-gradient(135deg, #a88620 0%, var(--gold-light) 100%) !important;
+  color: var(--bg) !important;
+  border: none !important;
+  font-weight: 700 !important;
+  font-size: 16px !important;
+  padding: 14px 24px !important;
+  box-shadow: 0 4px 16px var(--gold-glow), 0 2px 4px rgba(0,0,0,0.4) !important;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.1) !important;
+}
+
+button.gr-button.primary:hover {
+  background: linear-gradient(135deg, var(--gold) 0%, #f0c95a 100%) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 8px 24px var(--gold-glow), 0 4px 8px rgba(0,0,0,0.4) !important;
+  color: var(--bg) !important;
+}
+
+/* Star button */
+.star-btn button {
+  font-size: 1.5em !important;
+  padding: 6px 10px !important;
+  min-width: 48px !important;
+  height: 48px !important;
+  background: transparent !important;
+  border: 1.5px solid var(--border) !important;
+  color: var(--gold) !important;
+  border-radius: var(--radius-sm) !important;
+}
+
+.star-btn button:hover {
+  background: linear-gradient(135deg, var(--crimson) 0%, var(--crimson-lt) 100%) !important;
+  color: white !important;
+  border-color: var(--crimson-lt) !important;
+  transform: scale(1.1) !important;
+  box-shadow: 0 4px 16px rgba(139, 26, 26, 0.5) !important;
+}
+
+/* Feedback buttons (👍/👎) */
+.feedback-btn button {
+  font-size: 1.2em !important;
+  min-width: 44px !important;
+  padding: 6px 10px !important;
+}
+
+/* Explain button */
+.explain-btn button {
+  background: linear-gradient(135deg, rgba(201, 162, 39, 0.15) 0%,
+                                      rgba(201, 162, 39, 0.05) 100%) !important;
+  border-color: var(--border-acc) !important;
+  color: var(--gold-light) !important;
+}
+
+.explain-btn button:hover {
+  background: linear-gradient(135deg, rgba(201, 162, 39, 0.3) 0%,
+                                      rgba(201, 162, 39, 0.15) 100%) !important;
+  color: var(--gold) !important;
+}
+
+/* === Inputs === */
+input[type="text"], input[type="number"], textarea, .gr-input {
+  background: rgba(11, 12, 16, 0.6) !important;
+  color: var(--text) !important;
+  border: 1.5px solid var(--border) !important;
+  border-radius: var(--radius-sm) !important;
+  padding: 10px 14px !important;
+  font-family: inherit !important;
+  font-size: 15px !important;
+  transition: var(--transition) !important;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+textarea:focus {
+  border-color: var(--gold) !important;
+  box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.15) !important;
+  outline: none !important;
+}
+
+/* === Range sliders === */
+input[type="range"] {
+  accent-color: var(--gold) !important;
+}
+
+/* === Dropdown === */
+.gr-dropdown, .gr-dropdown input {
+  background: rgba(11, 12, 16, 0.6) !important;
+  color: var(--text) !important;
+  border: 1.5px solid var(--border) !important;
+  border-radius: var(--radius-sm) !important;
+}
+
+/* === Labels === */
+label, .gr-label {
+  color: var(--text-muted) !important;
+  font-size: 0.85em !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.3px !important;
+}
+
+/* === Status bar === */
+.status-bar {
+  background: rgba(31, 35, 43, 0.85) !important;
+  border-left: 4px solid var(--gold) !important;
+  padding: 12px 16px !important;
+  color: var(--text-muted) !important;
+  border-radius: var(--radius-sm) !important;
+  font-size: 0.9em !important;
+}
+
+/* === Favorites === */
+.favorites-panel textarea {
+  min-height: 200px !important;
+  font-family: 'JetBrains Mono', 'Consolas', 'Courier New', monospace !important;
+  font-size: 14px !important;
+  line-height: 1.6 !important;
+}
+
+/* === Header === */
+.app-title {
+  padding: 20px 0 !important;
+  border-bottom: 1px solid var(--border-acc) !important;
+  margin-bottom: 20px !important;
+}
+
+/* === Mode switch === */
+.mode-switch {
+  background: var(--panel) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius-sm) !important;
+  padding: 6px !important;
+}
+
+.mode-switch label {
+  padding: 8px 20px !important;
+  border-radius: 6px !important;
+  transition: var(--transition) !important;
+  cursor: pointer !important;
+  color: var(--text) !important;
+  font-size: 0.95em !important;
+}
+
+.mode-switch label:hover {
+  background: var(--panel-hover) !important;
+}
+
+/* === Card name input === */
+.card-name input {
+  background: transparent !important;
+  border: none !important;
+  font-family: 'Georgia', serif !important;
+  font-size: 20px !important;
+  font-weight: 500 !important;
+  color: var(--text) !important;
+  padding: 8px 0 !important;
+}
+
+/* === Defense metadata === */
+.meta-block {
+  background: rgba(11, 12, 16, 0.5) !important;
+  border-left: 3px solid var(--gold) !important;
+  padding: 10px 14px !important;
+  border-radius: 6px !important;
+  font-size: 13px !important;
+  color: var(--text-muted) !important;
+  line-height: 1.7 !important;
+  margin: 4px 0 !important;
+}
+
+.meta-block strong { color: var(--gold-light) !important; }
+
+/* === Explain panel === */
+.explain-panel {
+  background: linear-gradient(135deg,
+              rgba(31, 35, 43, 0.95) 0%,
+              rgba(21, 24, 32, 0.95) 100%) !important;
+  border: 1px solid var(--border-acc) !important;
+  border-radius: var(--radius) !important;
+  padding: 16px 20px !important;
+  box-shadow: var(--shadow-md) !important;
+}
+
+/* === Scrollbar === */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: var(--bg); border-radius: 4px; }
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+  transition: var(--transition);
+}
+::-webkit-scrollbar-thumb:hover { background: var(--gold); }
+
+/* === Animations === */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in { animation: fadeIn 0.3s ease-out; }
