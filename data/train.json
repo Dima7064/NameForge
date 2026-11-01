@@ -1,0 +1,402 @@
+[
+  {
+    "name": "Эарвен",
+    "style": "elven",
+    "source": "seed"
+  },
+  {
+    "name": "Фингольфин",
+    "style": "elven",
+    "source": "seed"
+  },
+  {
+    "name": "Фириэль",
+    "style": "elven",
+    "source": "seed"
+  },
+  {
+    "name": "Лутиэн",
+    "style": "elven",
+    "source": "seed"
+  },
+  {
+    "name": "Арвен",
+    "style": "elven",
+    "source": "seed"
+  },
+  {
+    "name": "Наэлир",
+    "style": "elven",
+    "source": "seed"
+  },
+  {
+    "name": "Иллириэн",
+    "style": "elven",
+    "source": "seed"
+  },
+  {
+    "name": "Линдириэль",
+    "style": "elven",
+    "source": "seed"
+  },
+  {
+    "name": "Келеборн",
+    "style": "elven",
+    "source": "seed"
+  },
+  {
+    "name": "Лориэль",
+    "style": "elven",
+    "source": "seed"
+  },
+  {
+    "name": "Аэлиндиль",
+    "style": "elven",
+    "source": "seed"
+  },
+  {
+    "name": "Леголас",
+    "style": "elven",
+    "source": "seed"
+  },
+  {
+    "name": "Сильванор",
+    "style": "elven",
+    "source": "seed"
+  },
+  {
+    "name": "Трандуил",
+    "style": "elven",
+    "source": "seed"
+  },
+  {
+    "name": "Эленвэн",
+    "style": "elven",
+    "source": "seed"
+  },
+  {
+    "name": "Элентиль",
+    "style": "elven",
+    "source": "seed"
+  },
+  {
+    "name": "Карл",
+    "style": "human",
+    "source": "seed"
+  },
+  {
+    "name": "Филипп",
+    "style": "human",
+    "source": "seed"
+  },
+  {
+    "name": "Гарольд",
+    "style": "human",
+    "source": "seed"
+  },
+  {
+    "name": "Генрих",
+    "style": "human",
+    "source": "seed"
+  },
+  {
+    "name": "Артур",
+    "style": "human",
+    "source": "seed"
+  },
+  {
+    "name": "Ансельм",
+    "style": "human",
+    "source": "seed"
+  },
+  {
+    "name": "Эдвин",
+    "style": "human",
+    "source": "seed"
+  },
+  {
+    "name": "Эдуард",
+    "style": "human",
+    "source": "seed"
+  },
+  {
+    "name": "Вильгельм",
+    "style": "human",
+    "source": "seed"
+  },
+  {
+    "name": "Конрад",
+    "style": "human",
+    "source": "seed"
+  },
+  {
+    "name": "Мариан",
+    "style": "human",
+    "source": "seed"
+  },
+  {
+    "name": "Роланд",
+    "style": "human",
+    "source": "seed"
+  },
+  {
+    "name": "Ричард",
+    "style": "human",
+    "source": "seed"
+  },
+  {
+    "name": "Томас",
+    "style": "human",
+    "source": "seed"
+  },
+  {
+    "name": "Мартин",
+    "style": "human",
+    "source": "seed"
+  },
+  {
+    "name": "Роберт",
+    "style": "human",
+    "source": "seed"
+  },
+  {
+    "name": "Тхарг",
+    "style": "orcish",
+    "source": "seed"
+  },
+  {
+    "name": "Грохар",
+    "style": "orcish",
+    "source": "seed"
+  },
+  {
+    "name": "Гхарзаг",
+    "style": "orcish",
+    "source": "seed"
+  },
+  {
+    "name": "Могра",
+    "style": "orcish",
+    "source": "seed"
+  },
+  {
+    "name": "Углак",
+    "style": "orcish",
+    "source": "seed"
+  },
+  {
+    "name": "Угруш",
+    "style": "orcish",
+    "source": "seed"
+  },
+  {
+    "name": "Гузгат",
+    "style": "orcish",
+    "source": "seed"
+  },
+  {
+    "name": "Горзаг",
+    "style": "orcish",
+    "source": "seed"
+  },
+  {
+    "name": "Кразг",
+    "style": "orcish",
+    "source": "seed"
+  },
+  {
+    "name": "Шаргул",
+    "style": "orcish",
+    "source": "seed"
+  },
+  {
+    "name": "Кхарг",
+    "style": "orcish",
+    "source": "seed"
+  },
+  {
+    "name": "Мургаш",
+    "style": "orcish",
+    "source": "seed"
+  },
+  {
+    "name": "Даргаш",
+    "style": "orcish",
+    "source": "seed"
+  },
+  {
+    "name": "Моргаш",
+    "style": "orcish",
+    "source": "seed"
+  },
+  {
+    "name": "Ургул",
+    "style": "orcish",
+    "source": "seed"
+  },
+  {
+    "name": "Узгаш",
+    "style": "orcish",
+    "source": "seed"
+  },
+  {
+    "name": "Олаф",
+    "style": "northern",
+    "source": "seed"
+  },
+  {
+    "name": "Торгрим",
+    "style": "northern",
+    "source": "seed"
+  },
+  {
+    "name": "Ингвар",
+    "style": "northern",
+    "source": "seed"
+  },
+  {
+    "name": "Эйрик",
+    "style": "northern",
+    "source": "seed"
+  },
+  {
+    "name": "Хакон",
+    "style": "northern",
+    "source": "seed"
+  },
+  {
+    "name": "Магнус",
+    "style": "northern",
+    "source": "seed"
+  },
+  {
+    "name": "Эрик",
+    "style": "northern",
+    "source": "seed"
+  },
+  {
+    "name": "Хрольф",
+    "style": "northern",
+    "source": "seed"
+  },
+  {
+    "name": "Ивар",
+    "style": "northern",
+    "source": "seed"
+  },
+  {
+    "name": "Хельге",
+    "style": "northern",
+    "source": "seed"
+  },
+  {
+    "name": "Сигурд",
+    "style": "northern",
+    "source": "seed"
+  },
+  {
+    "name": "Рагнар",
+    "style": "northern",
+    "source": "seed"
+  },
+  {
+    "name": "Торвальд",
+    "style": "northern",
+    "source": "seed"
+  },
+  {
+    "name": "Харальд",
+    "style": "northern",
+    "source": "seed"
+  },
+  {
+    "name": "Свейн",
+    "style": "northern",
+    "source": "seed"
+  },
+  {
+    "name": "Асбьорн",
+    "style": "northern",
+    "source": "seed"
+  },
+  {
+    "name": "Джулиано",
+    "style": "southern",
+    "source": "seed"
+  },
+  {
+    "name": "Марчелло",
+    "style": "southern",
+    "source": "seed"
+  },
+  {
+    "name": "Розарио",
+    "style": "southern",
+    "source": "seed"
+  },
+  {
+    "name": "Антонио",
+    "style": "southern",
+    "source": "seed"
+  },
+  {
+    "name": "Беллина",
+    "style": "southern",
+    "source": "seed"
+  },
+  {
+    "name": "София",
+    "style": "southern",
+    "source": "seed"
+  },
+  {
+    "name": "Лукано",
+    "style": "southern",
+    "source": "seed"
+  },
+  {
+    "name": "Санчо",
+    "style": "southern",
+    "source": "seed"
+  },
+  {
+    "name": "Изабелла",
+    "style": "southern",
+    "source": "seed"
+  },
+  {
+    "name": "Матео",
+    "style": "southern",
+    "source": "seed"
+  },
+  {
+    "name": "Педрино",
+    "style": "southern",
+    "source": "seed"
+  },
+  {
+    "name": "Федерико",
+    "style": "southern",
+    "source": "seed"
+  },
+  {
+    "name": "Диего",
+    "style": "southern",
+    "source": "seed"
+  },
+  {
+    "name": "Рикардо",
+    "style": "southern",
+    "source": "seed"
+  },
+  {
+    "name": "Орнелла",
+    "style": "southern",
+    "source": "seed"
+  },
+  {
+    "name": "Фьоренцо",
+    "style": "southern",
+    "source": "seed"
+  }
+]

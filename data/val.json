@@ -1,0 +1,52 @@
+[
+  {
+    "name": "Мелиан",
+    "style": "elven",
+    "source": "seed"
+  },
+  {
+    "name": "Элронд",
+    "style": "elven",
+    "source": "seed"
+  },
+  {
+    "name": "Луи",
+    "style": "human",
+    "source": "seed"
+  },
+  {
+    "name": "Дитрих",
+    "style": "human",
+    "source": "seed"
+  },
+  {
+    "name": "Заргул",
+    "style": "orcish",
+    "source": "seed"
+  },
+  {
+    "name": "Баргаш",
+    "style": "orcish",
+    "source": "seed"
+  },
+  {
+    "name": "Бьярни",
+    "style": "northern",
+    "source": "seed"
+  },
+  {
+    "name": "Лейф",
+    "style": "northern",
+    "source": "seed"
+  },
+  {
+    "name": "Луизино",
+    "style": "southern",
+    "source": "seed"
+  },
+  {
+    "name": "Ренальдо",
+    "style": "southern",
+    "source": "seed"
+  }
+]

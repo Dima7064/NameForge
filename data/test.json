@@ -1,0 +1,52 @@
+[
+  {
+    "name": "Аэлиониэль",
+    "style": "elven",
+    "source": "seed"
+  },
+  {
+    "name": "Галадриэль",
+    "style": "elven",
+    "source": "seed"
+  },
+  {
+    "name": "Альберт",
+    "style": "human",
+    "source": "seed"
+  },
+  {
+    "name": "Бертран",
+    "style": "human",
+    "source": "seed"
+  },
+  {
+    "name": "Орзул",
+    "style": "orcish",
+    "source": "seed"
+  },
+  {
+    "name": "Гришнак",
+    "style": "orcish",
+    "source": "seed"
+  },
+  {
+    "name": "Бьорнар",
+    "style": "northern",
+    "source": "seed"
+  },
+  {
+    "name": "Халвард",
+    "style": "northern",
+    "source": "seed"
+  },
+  {
+    "name": "Паоло",
+    "style": "southern",
+    "source": "seed"
+  },
+  {
+    "name": "Серафино",
+    "style": "southern",
+    "source": "seed"
+  }
+]
