@@ -1,3 +1,4 @@
+
 # Core ML
 torch
 numpy
@@ -8,12 +9,8 @@ scikit-learn
 matplotlib
 seaborn
 
-# ONNX (export + inference)
-onnx
-onnxruntime
-
 # UI
-gradio
+gradio>=5.0,<7.0
 
 # Build
 pyinstaller
