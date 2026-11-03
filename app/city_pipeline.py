@@ -5,6 +5,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Optional
 
+from app.paths import get_install_dir
 from ml.lstm_gen import STYLES, load_lstm
 from ml.lstm_gen import sample as lstm_sample
 from ml.report import count_syllables, cv_pattern
@@ -19,9 +20,7 @@ class GeneratedCity:
 
 class CityPipeline:
     def __init__(self, models_dir: Optional[Path] = None):
-        self.models_dir = models_dir or (
-            Path(__file__).resolve().parent.parent / "models"
-        )
+        self.models_dir = models_dir or (get_install_dir() / "models")
         ckpt_path = self.models_dir / "city_lstm.pt"
         if not ckpt_path.exists():
             raise FileNotFoundError(
@@ -30,11 +29,9 @@ class CityPipeline:
             )
         self.model, self.itos, self.stoi = load_lstm(ckpt_path)
 
-    def generate(self, style: str, syllables: int, count: int,
-                 seed: Optional[int] = None, temperature: float = 0.8,
-                 top_k: int = 40, top_p: float = 0.9,
-                 n_candidates: int = 100, max_iterations: int = 3
-                 ) -> list[GeneratedCity]:
+    def generate(self, style, syllables, count, seed=None,
+                 temperature=0.8, top_k=40, top_p=0.9,
+                 n_candidates=100, max_iterations=3):
         if style not in STYLES:
             raise ValueError(f"Неизвестный стиль: {style!r}")
         if not (1 <= syllables <= 8):
@@ -51,7 +48,6 @@ class CityPipeline:
         while len(results) < count and iteration < max_iterations:
             for i in range(n_candidates):
                 cand_seed = base_seed + iteration * n_candidates + i
-                # Города гендера не имеют — передаём "male" как заглушку
                 name = lstm_sample(self.model, self.itos, self.stoi,
                                    style, "male", temperature, top_k,
                                    top_p, cand_seed)

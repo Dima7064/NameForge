@@ -1,9 +1,0 @@
-
-{
-  "mode": "writer",
-  "weights": {
-    "style": 0.5,
-    "novelty": 0.25,
-    "plausibility": 0.25
-  }
-}

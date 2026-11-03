@@ -1,13 +1,10 @@
 
-"""Точка входа NameForge (Gradio 6).
-
-Запуск:
-    python -m app.main
-"""
-import json
-from pathlib import Path
+"""Точка входа Ономастикона. Работает и из исходников, и из .exe."""
+import sys
+import traceback
 
 from app.city_pipeline import CityPipeline
+from app.paths import get_install_dir
 from app.pipeline import Pipeline
 from app.ui import build_app
 
@@ -20,36 +17,27 @@ def city_pipeline_factory() -> CityPipeline:
     return CityPipeline()
 
 
-def _load_default_mode() -> str:
-    cfg = Path(__file__).resolve().parent.parent / "config.json"
-    if not cfg.exists():
-        return "writer"
-    try:
-        with cfg.open("r", encoding="utf-8") as f:
-            mode = json.load(f).get("mode", "writer")
-        return mode if mode in ("writer", "defense") else "writer"
-    except (json.JSONDecodeError, OSError):
-        return "writer"
-
-
 def main() -> None:
-    root = Path(__file__).resolve().parent
-    css_path = root.parent / "assets" / "theme.css"
-    css = css_path.read_text(encoding="utf-8") if css_path.exists() else ""
+    try:
+        css_path = get_install_dir() / "assets" / "theme.css"
+        css = css_path.read_text(encoding="utf-8") if css_path.exists() else ""
 
-    app = build_app(
-        pipeline_factory,
-        city_pipeline_factory=city_pipeline_factory,
-        default_mode=_load_default_mode(),
-    )
-    app.launch(
-        css=css,
-        server_name="127.0.0.1",
-        server_port=7860,
-        inbrowser=True,
-        show_error=True,
-        quiet=False,
-    )
+        app = build_app(pipeline_factory,
+                        city_pipeline_factory=city_pipeline_factory)
+        app.launch(
+            css=css,
+            server_name="127.0.0.1",
+            server_port=7860,
+            inbrowser=True,
+            show_error=True,
+            quiet=False,
+        )
+    except Exception as e:
+        print(f"\n❌ ОШИБКА ЗАПУСКА:\n{e}\n")
+        traceback.print_exc()
+        if getattr(sys, "frozen", False):
+            input("Нажми Enter для закрытия...")
+        sys.exit(1)
 
 
 if __name__ == "__main__":

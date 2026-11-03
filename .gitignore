@@ -1,16 +1,20 @@
+
 # Python
 __pycache__/
 *.py[cod]
 *.egg-info/
 .Python
-build/
-dist/
 .eggs/
 
 # Virtual environment
 venv/
 env/
 ENV/
+
+# PyInstaller artifacts
+build/_work/
+build/*.spec
+dist/
 
 # Testing and linting caches
 .pytest_cache/

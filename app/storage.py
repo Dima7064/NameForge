@@ -1,24 +1,31 @@
 
-"""Хранение избранного (имён и городов) и feedback."""
+"""Хранение избранного (имена и города).
+
+В source-режиме — в data/.
+В .exe — в user_data/ рядом с NameForge.exe (сохраняется между запусками).
+"""
 import csv
 import json
-import time
 from pathlib import Path
 
+from app.paths import get_user_data_dir
 
-def _root(root: Path | None) -> Path:
+
+def _fav_path(root: Path | None = None) -> Path:
     if root is not None:
-        return root
-    return Path(__file__).resolve().parent.parent
+        return root / "data" / "favorites.json"
+    return get_user_data_dir() / "favorites.json"
+
+
+def _city_path(root: Path | None = None) -> Path:
+    if root is not None:
+        return root / "data" / "city_favorites.json"
+    return get_user_data_dir() / "city_favorites.json"
 
 
 # ============================================================
 #                     Избранное: имена
 # ============================================================
-
-def _fav_path(root: Path | None = None) -> Path:
-    return _root(root) / "data" / "favorites.json"
-
 
 def load_favorites(root: Path | None = None) -> list[str]:
     path = _fav_path(root)
@@ -69,12 +76,14 @@ def clear_favorites(root: Path | None = None) -> list[str]:
 
 def export_txt(path: Path, root: Path | None = None) -> Path:
     favs = load_favorites(root)
+    path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text("\n".join(favs), encoding="utf-8")
     return path
 
 
 def export_csv(path: Path, root: Path | None = None) -> Path:
     favs = load_favorites(root)
+    path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8", newline="") as f:
         writer = csv.writer(f)
         writer.writerow(["name"])
@@ -86,10 +95,6 @@ def export_csv(path: Path, root: Path | None = None) -> Path:
 # ============================================================
 #                     Избранное: города
 # ============================================================
-
-def _city_path(root: Path | None = None) -> Path:
-    return _root(root) / "data" / "city_favorites.json"
-
 
 def load_city_favorites(root: Path | None = None) -> list[str]:
     path = _city_path(root)
@@ -133,55 +138,6 @@ def clear_city_favorites(root: Path | None = None) -> list[str]:
 
 def export_city_txt(path: Path, root: Path | None = None) -> Path:
     favs = load_city_favorites(root)
+    path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text("\n".join(favs), encoding="utf-8")
     return path
-
-
-# ============================================================
-#                          Feedback
-# ============================================================
-
-def _fb_path(root: Path | None = None) -> Path:
-    return _root(root) / "data" / "feedback.json"
-
-
-def load_feedback(root: Path | None = None) -> list[dict]:
-    path = _fb_path(root)
-    if not path.exists():
-        return []
-    try:
-        with path.open("r", encoding="utf-8") as f:
-            return list(json.load(f).get("votes", []))
-    except (json.JSONDecodeError, OSError):
-        return []
-
-
-def _save_feedback(votes: list[dict], root: Path | None = None) -> None:
-    path = _fb_path(root)
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open("w", encoding="utf-8") as f:
-        json.dump({"votes": votes}, f, ensure_ascii=False, indent=2)
-
-
-def add_vote(name: str, style: str, vote: str,
-             root: Path | None = None) -> dict[str, int]:
-    if vote not in ("up", "down"):
-        raise ValueError(f"vote должен быть 'up' или 'down', получено {vote!r}")
-    votes = load_feedback(root)
-    votes.append({
-        "name": name, "style": style, "vote": vote,
-        "ts": int(time.time()),
-    })
-    _save_feedback(votes, root)
-    return vote_stats(name, root)
-
-
-def vote_stats(name: str, root: Path | None = None) -> dict[str, int]:
-    votes = load_feedback(root)
-    up = sum(1 for v in votes if v["name"] == name and v["vote"] == "up")
-    down = sum(1 for v in votes if v["name"] == name and v["vote"] == "down")
-    return {"up": up, "down": down}
-
-
-def clear_feedback(root: Path | None = None) -> None:
-    _save_feedback([], root)

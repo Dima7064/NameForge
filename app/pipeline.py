@@ -1,3 +1,4 @@
+
 """Пайплайн: генерация → фильтр → скоринг → ранжирование + объяснения."""
 import json
 import random
@@ -7,6 +8,7 @@ from typing import Optional
 
 import torch
 
+from app.paths import get_install_dir
 from ml.classifier import load_classifier, predict_proba
 from ml.lstm_gen import STYLES, load_lstm
 from ml.lstm_gen import sample as lstm_sample
@@ -62,8 +64,7 @@ def _split_syllables(name: str) -> list[str]:
     return parts
 
 
-def _empty_explanation(name: str, target_style: str,
-                       error: str = "") -> dict:
+def _empty_explanation(name: str, target_style: str, error: str = "") -> dict:
     return {
         "name": name,
         "syllable_split": name,
@@ -85,42 +86,38 @@ class Pipeline:
         if model_type not in ("lstm", "transformer"):
             raise ValueError("model_type должен быть 'lstm' или 'transformer'")
         self.model_type = model_type
-        self.models_dir = models_dir or (
-            Path(__file__).resolve().parent.parent / "models"
-        )
+        self.models_dir = models_dir or (get_install_dir() / "models")
         if not self.models_dir.exists():
             raise FileNotFoundError(f"Папка моделей не найдена: {self.models_dir}")
 
         if model_type == "lstm":
-            gen_path = self.models_dir / "lstm.pt"
-            self.gen_model, self.itos, self.stoi_gen = load_lstm(gen_path)
+            self.gen_model, self.itos, self.stoi_gen = load_lstm(
+                self.models_dir / "lstm.pt"
+            )
         else:
-            gen_path = self.models_dir / "transformer.pt"
-            self.gen_model, self.itos, self.stoi_gen = load_transformer(gen_path)
+            self.gen_model, self.itos, self.stoi_gen = load_transformer(
+                self.models_dir / "transformer.pt"
+            )
 
         self.classifier, self.stoi_cls, self.plausibility, self.novelty = (
             _load_scorers(self.models_dir)
         )
 
-        train_path = self.models_dir.parent / "data" / "train.json"
+        train_path = get_install_dir() / "data" / "train.json"
         self.train_names: set[str] = set()
         if train_path.exists():
             with train_path.open("r", encoding="utf-8") as f:
                 self.train_names = {d["name"].lower() for d in json.load(f)}
 
-    def _sample_one(self, style: str, gender: str,
-                    temperature: float, top_k: int,
-                    top_p: float, seed: int) -> str:
+    def _sample_one(self, style, gender, temperature, top_k, top_p, seed):
         if self.model_type == "lstm":
             return lstm_sample(self.gen_model, self.itos, self.stoi_gen,
                                style, gender, temperature, top_k, top_p, seed)
-        # Transformer не поддерживает gender — игнорируем
         return transformer_sample(self.gen_model, self.itos, self.stoi_gen,
                                   style, temperature, top_k, top_p, seed)
 
-    def _score_one(self, name: str, target_style: str,
-                   w_style: float, w_novelty: float, w_plaus: float,
-                   gender: str = "male") -> ScoredName:
+    def _score_one(self, name, target_style, w_style, w_novelty, w_plaus,
+                   gender="male"):
         style_probs = predict_proba(self.classifier, self.stoi_cls, name)
         style_score = style_probs[target_style]
         novelty_score = self.novelty.score(name)
@@ -137,25 +134,19 @@ class Pipeline:
             gender=gender,
         )
 
-    def generate(self, style: str, syllables: int, count: int,
-                 seed: Optional[int] = None, gender: str = "male",
-                 temperature: float = 0.8, top_k: int = 40, top_p: float = 0.9,
-                 n_candidates: int = 100, max_iterations: int = 3,
-                 w_style: float = 0.5, w_novelty: float = 0.25,
-                 w_plaus: float = 0.25) -> list[ScoredName]:
-        results, _ = self.generate_with_stats(
+    def generate(self, style, syllables, count, seed=None, gender="male",
+                 temperature=0.8, top_k=40, top_p=0.9,
+                 n_candidates=100, max_iterations=3,
+                 w_style=0.5, w_novelty=0.25, w_plaus=0.25):
+        return self.generate_with_stats(
             style, syllables, count, seed, gender, temperature, top_k, top_p,
             n_candidates, max_iterations, w_style, w_novelty, w_plaus,
-        )
-        return results
+        )[0]
 
-    def generate_with_stats(self, style: str, syllables: int, count: int,
-                            seed: Optional[int] = None, gender: str = "male",
-                            temperature: float = 0.8, top_k: int = 40,
-                            top_p: float = 0.9, n_candidates: int = 100,
-                            max_iterations: int = 3, w_style: float = 0.5,
-                            w_novelty: float = 0.25, w_plaus: float = 0.25
-                            ) -> tuple[list[ScoredName], dict]:
+    def generate_with_stats(self, style, syllables, count, seed=None,
+                            gender="male", temperature=0.8, top_k=40,
+                            top_p=0.9, n_candidates=100, max_iterations=3,
+                            w_style=0.5, w_novelty=0.25, w_plaus=0.25):
         if style not in STYLES:
             raise ValueError(f"Неизвестный стиль: {style!r}")
         if gender not in ("male", "female", "random"):
@@ -184,7 +175,6 @@ class Pipeline:
         while len(all_scored) < count and iteration < max_iterations:
             for i in range(n_candidates):
                 cand_seed = base_seed + iteration * n_candidates + i
-                # Выбор пола
                 if gender == "random":
                     rng = random.Random(cand_seed ^ 0xABCD)
                     this_gender = rng.choice(["male", "female"])
@@ -218,9 +208,8 @@ class Pipeline:
         }
         return all_scored[:count], stats
 
-    def explain(self, name: str, target_style: str,
-                w_style: float = 0.5, w_novelty: float = 0.25,
-                w_plaus: float = 0.25) -> dict:
+    def explain(self, name, target_style, w_style=0.5, w_novelty=0.25,
+                w_plaus=0.25):
         if not name:
             return _empty_explanation(name, target_style, "пустое имя")
         if target_style not in STYLES:
@@ -256,7 +245,7 @@ class Pipeline:
         if target_style == "elven":
             if any(d in ["аэ", "эа", "иэ", "эи", "иа", "аи", "ио", "ои"]
                    for d in dips):
-                comments.append("эльфийские дифтонги (аэ, иэ, ио)")
+                comments.append("эльфийские дифтонги")
             if nm.endswith(("эль", "иэль", "иль", "эл")):
                 comments.append("окончание -эль/-иэль/-ил")
             if "ль" in nm:

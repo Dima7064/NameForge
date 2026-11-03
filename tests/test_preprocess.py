@@ -9,6 +9,8 @@ from ml.transliterate import transliterate
 
 
 # ---------- normalize ----------
+#
+# MIN_LEN=2, верхнего лимита нет.
 
 def test_normalize_basic():
     assert normalize("роланд") == "Роланд"
@@ -27,12 +29,24 @@ def test_normalize_rejects_latin():
 
 def test_normalize_rejects_too_short():
     with pytest.raises(ValueError):
-        normalize("Аб")
+        normalize("А")
 
 
-def test_normalize_rejects_too_long():
-    with pytest.raises(ValueError):
-        normalize("А" * 25)
+def test_normalize_accepts_2_chars():
+    assert normalize("Аб") == "Аб"
+
+
+def test_normalize_accepts_long_names():
+    """Верхнего лимита нет — длинные имена допустимы.
+
+    Функция делает первую букву заглавной, остальные строчными.
+    Поэтому ожидаемый результат — 'А' + 'а'*49, а не исходная строка.
+    """
+    long_name = "А" * 50
+    result = normalize(long_name)
+    assert len(result) == 50
+    assert result[0] == "А"
+    assert result[1:] == "а" * 49
 
 
 # ---------- preprocess ----------
@@ -54,9 +68,6 @@ def test_preprocess_skips_invalid_style():
 
 
 # ---------- split ----------
-#
-# ВАЖНО: split() рассчитан на УЖЕ очищенные данные (дубликаты удалены
-# на шаге preprocess). Поэтому тест подаёт уникальные имена.
 
 def test_split_no_overlap():
     names = [
@@ -87,24 +98,21 @@ def test_split_sizes():
 # ---------- слоги ----------
 
 def test_count_syllables():
-    assert count_syllables("Роланд") == 2        # о, а
-    assert count_syllables("Аэлиониэль") == 6    # а, э, и, о, и, э
-    assert count_syllables("Торгрим") == 2       # о, и
-    assert count_syllables("Тхарг") == 1         # а
+    assert count_syllables("Роланд") == 2
+    assert count_syllables("Аэлиониэль") == 6
+    assert count_syllables("Торгрим") == 2
+    assert count_syllables("Тхарг") == 1
 
 
 def test_cv_pattern():
     assert cv_pattern("Роланд") == "C-V-C-V-C-C"
-    # ь не считается ни C, ни V — она модифицирует предыдущую согласную.
     assert cv_pattern("Аэлиониэль") == "V-V-C-V-V-C-V-V-C"
 
 
 # ---------- транслитерация ----------
 
 def test_transliterate_elven():
-    # -iel в финале → -иэль
     assert transliterate("Aelioniel") == "Аэлиониэль"
-    # l перед согласной → ль
     assert transliterate("Silvanor") == "Сильванор"
     assert transliterate("Alfred") == "Альфред"
 
@@ -115,6 +123,4 @@ def test_transliterate_simple():
 
 
 def test_transliterate_l_before_vowel_stays_soft_via_i():
-    # 'li' перед гласной: 'l' не смягчается правилом перед согласной,
-    # мягкость даёт следующая 'и'.
     assert transliterate("Aelion") == "Аэлион"

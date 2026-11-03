@@ -3,7 +3,8 @@
 import torch
 
 from ml.lstm_gen import (
-    BOS, EOS, LSTMNameGen, build_vocab, encode_name, sample, train_lstm,
+    BOS, EOS, GENDER_TO_ID, LSTMNameGen, build_vocab, encode_name,
+    sample, train_lstm,
 )
 
 
@@ -24,18 +25,21 @@ def test_encode_name():
     encoded = encode_name("Аб", stoi)
     assert encoded[0] == BOS
     assert encoded[-1] == EOS
-    assert len(encoded) == 4  # BOS + 2 буквы + EOS
+    assert len(encoded) == 4
 
 
 # ---------- forward ----------
 
 def test_model_forward_shape():
+    """Модель теперь принимает и styles, и genders."""
     itos, _ = build_vocab(["Абв"])
     model = LSTMNameGen(vocab_size=len(itos), hidden_size=16,
-                        emb_size=8, style_emb_size=4, num_layers=1)
+                        emb_size=8, style_emb_size=4,
+                        gender_emb_size=4, num_layers=1)
     x = torch.tensor([[BOS, 3, 4]])
-    s = torch.tensor([0])
-    logits, _ = model(x, s)
+    s = torch.tensor([0])          # стиль
+    g = torch.tensor([GENDER_TO_ID["male"]])
+    logits, _ = model(x, s, g)
     assert logits.shape == (1, 3, len(itos))
 
 
@@ -43,10 +47,10 @@ def test_model_forward_shape():
 
 def _tiny_data():
     return [
-        {"name": "Аэлион", "style": "elven"},
-        {"name": "Сильван", "style": "elven"},
-        {"name": "Роланд", "style": "human"},
-        {"name": "Роберт", "style": "human"},
+        {"name": "Аэлион", "style": "elven", "gender": "male"},
+        {"name": "Ариэль", "style": "elven", "gender": "female"},
+        {"name": "Роланд", "style": "human", "gender": "male"},
+        {"name": "Мариан", "style": "human", "gender": "female"},
     ]
 
 
@@ -61,10 +65,9 @@ def test_train_short():
 
 
 def test_train_with_oov_in_val():
-    """Регрессионный тест: если в val есть символ, отсутствующий в train,
-    обучение не падает (символ добавляется в vocab через vocab_data)."""
-    train = [{"name": "Аб", "style": "human"}]
-    val = [{"name": "За", "style": "human"}]  # 'З' нет в train
+    """Регрессия: символ из val, отсутствующий в train, не должен падать."""
+    train = [{"name": "Аб", "style": "human", "gender": "male"}]
+    val = [{"name": "За", "style": "human", "gender": "male"}]
     model, itos, stoi, _ = train_lstm(
         train, val, vocab_data=train + val,
         epochs=2, lr=1e-2, patience=100, verbose=False,
@@ -79,7 +82,7 @@ def test_sample_returns_string():
     model, itos, stoi, _ = train_lstm(
         data, data, epochs=3, lr=1e-2, patience=100, verbose=False,
     )
-    name = sample(model, itos, stoi, style="elven", seed=42)
+    name = sample(model, itos, stoi, style="elven", gender="male", seed=42)
     assert isinstance(name, str)
 
 
@@ -88,8 +91,8 @@ def test_sample_deterministic():
     model, itos, stoi, _ = train_lstm(
         data, data, epochs=3, lr=1e-2, patience=100, verbose=False,
     )
-    n1 = sample(model, itos, stoi, style="elven", seed=42)
-    n2 = sample(model, itos, stoi, style="elven", seed=42)
+    n1 = sample(model, itos, stoi, style="elven", gender="male", seed=42)
+    n2 = sample(model, itos, stoi, style="elven", gender="male", seed=42)
     assert n1 == n2
 
 
@@ -100,5 +103,5 @@ def test_sample_only_vocab_chars():
     )
     allowed = set("".join(d["name"] for d in data))
     for seed in range(10):
-        name = sample(model, itos, stoi, style="elven", seed=seed)
+        name = sample(model, itos, stoi, style="elven", gender="male", seed=seed)
         assert all(ch in allowed for ch in name), f"Символ вне словаря: {name!r}"
